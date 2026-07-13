@@ -8,7 +8,7 @@ export const metadata = {
   description: "Find and book the best local service professionals.",
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:5000";
 
 async function fetchServices(searchParams: { [key: string]: string | string[] | undefined }): Promise<PaginatedServices> {
   const query = new URLSearchParams();

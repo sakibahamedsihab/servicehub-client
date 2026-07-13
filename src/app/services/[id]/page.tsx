@@ -5,7 +5,9 @@ import type { Service } from "@/lib/services";
 import type { VendorProfile } from "@/lib/vendors";
 import { Button } from "@/components/ui/Button";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+import { SlotPicker } from "@/components/services/SlotPicker";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:5000";
 
 async function fetchServiceAndVendor(id: string): Promise<{ service: Service; vendor: VendorProfile } | null> {
   try {
@@ -60,8 +62,8 @@ export default async function ServiceDetailsPage({ params }: Props) {
           <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <span style={{ color: "var(--orange)", fontSize: "1.2rem" }}>★</span>
-              <span style={{ color: "#fff", fontWeight: 700 }}>{service.rating.toFixed(1)}</span>
-              <span style={{ color: "#a3a3a3", fontSize: "0.9rem" }}>({service.reviewCount} reviews)</span>
+              <span style={{ color: "#fff", fontWeight: 700 }}>{(service.rating || 0).toFixed(1)}</span>
+              <span style={{ color: "#a3a3a3", fontSize: "0.9rem" }}>({service.reviewCount || 0} reviews)</span>
             </div>
             {vendor && (
               <>
@@ -137,21 +139,8 @@ export default async function ServiceDetailsPage({ params }: Props) {
                 </div>
               </div>
 
-              {/* Booking placeholder for 7.4 */}
-              <div style={{ background: "var(--gray-50)", border: "1px solid var(--border)", padding: "1.5rem", marginBottom: "1.5rem", textAlign: "center" }}>
-                <p style={{ fontSize: "0.9rem", color: "var(--gray-500)", margin: "0 0 1rem" }}>[ Slot Picker Component ]<br/>Select Date & Time (Task 7.4)</p>
-                <input type="date" disabled style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", background: "var(--white)", marginBottom: "0.75rem" }} />
-                <select disabled style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", background: "var(--white)" }}>
-                  <option>Select a time...</option>
-                </select>
-              </div>
-
-              <Button fullWidth disabled>
-                Book Appointment
-              </Button>
-              <p style={{ fontSize: "0.75rem", color: "var(--gray-500)", textAlign: "center", marginTop: "1rem", margin: "1rem 0 0" }}>
-                You won't be charged yet
-              </p>
+              {/* Slot Picker Component (Task 7.4) */}
+              <SlotPicker serviceId={service._id} />
             </div>
           </div>
         </div>

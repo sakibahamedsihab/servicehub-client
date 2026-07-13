@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { PaginatedServices } from "@/lib/services";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:5000";
 
 async function fetchRelatedServices(category: string, currentId: string): Promise<PaginatedServices> {
   const url = `${API_BASE}/api/services?category=${encodeURIComponent(category)}&limit=4`;
@@ -51,7 +51,7 @@ export async function RelatedServices({ category, currentId }: { category: strin
                   </h3>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
                     <span style={{ color: "var(--orange)", fontSize: "0.9rem" }}>★</span>
-                    <span style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--gray-900)" }}>{service.rating.toFixed(1)}</span>
+                    <span style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--gray-900)" }}>{(service.rating || 0).toFixed(1)}</span>
                   </div>
                   <div style={{ marginTop: "auto", paddingTop: "1rem", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between" }}>
                     <span style={{ fontSize: "0.85rem", color: "var(--gray-500)" }}>{service.durationMinutes} min</span>

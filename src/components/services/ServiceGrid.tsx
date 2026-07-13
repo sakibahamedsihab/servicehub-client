@@ -57,10 +57,10 @@ export function ServiceGrid({ data }: { data: PaginatedServices }) {
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
                   <span style={{ color: "var(--orange)" }}>★</span>
                   <span style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--gray-900)" }}>
-                    {service.rating.toFixed(1)}
+                    {(service.rating || 0).toFixed(1)}
                   </span>
                   <span style={{ fontSize: "0.8rem", color: "var(--gray-500)" }}>
-                    ({service.reviewCount} reviews)
+                    ({service.reviewCount || 0} reviews)
                   </span>
                 </div>
 

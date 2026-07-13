@@ -63,8 +63,13 @@ export function FeaturedServices() {
                   <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--muted)" }}>{vendor}</p>
 
                   <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <StarRating rating={rating} />
-                    <span style={{ fontSize: "0.78rem", color: "var(--muted)" }}>{rating} ({reviews})</span>
+                    <span style={{ color: "var(--orange)" }}>★</span>
+                    <span style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--gray-900)" }}>
+                      {(rating || 0).toFixed(1)}
+                    </span>
+                    <span style={{ fontSize: "0.75rem", color: "var(--gray-500)", marginLeft: "0.2rem" }}>
+                      ({reviews || 0})
+                    </span>
                   </div>
 
                   <div style={{ marginTop: "auto", paddingTop: "0.75rem", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
