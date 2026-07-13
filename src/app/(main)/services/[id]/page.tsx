@@ -5,6 +5,7 @@ import { RelatedServices } from "@/components/services/RelatedServices";
 import type { Service } from "@/lib/services";
 import type { VendorProfile } from "@/lib/vendors";
 import { Button } from "@/components/ui/Button";
+import { ServiceReviews } from "@/components/services/ServiceReviews";
 
 import { SlotPicker } from "@/components/services/SlotPicker";
 
@@ -128,6 +129,9 @@ export default async function ServiceDetailsPage({ params }: Props) {
                 </div>
               </div>
             )}
+
+            {/* Customer Reviews Section */}
+            <ServiceReviews serviceId={service._id} />
           </div>
 
           {/* Right Sticky Column (Booking Card) */}

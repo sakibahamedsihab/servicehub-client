@@ -62,7 +62,7 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
         ];
       case "admin":
         return [
-          { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
+          { name: "Overview", href: "/dashboard/admin", icon: LayoutDashboard },
           { name: "Vendors", href: "/dashboard/admin/vendors", icon: ShieldCheck },
           { name: "Users", href: "/dashboard/admin/users", icon: Users },
           { name: "Profile Settings", href: "/dashboard/profile", icon: Settings },

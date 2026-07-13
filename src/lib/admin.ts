@@ -1,16 +1,30 @@
 import { http } from "./http";
 import type { VendorProfile } from "./vendors";
 
+export interface AdminStats {
+  totalUsers: number;
+  totalVendors: number;
+  totalBookings: number;
+  totalRevenue: number;
+  chartData: { date: string; bookings: number }[];
+}
+
 export const adminApi = {
   /**
-   * Fetch all vendors on the platform.
+   * Get basic aggregated stats for the admin dashboard.
    */
-  listVendors: () => 
+  getStats: () => 
+    http.get<AdminStats>("/api/admin/stats"),
+
+  /**
+   * Get all vendor profiles for admin management.
+   */
+  getVendors: () => 
     http.get<VendorProfile[]>("/api/admin/vendors"),
 
   /**
-   * Toggle the verification status of a vendor.
+   * Verify or unverify a vendor profile.
    */
-  verifyVendor: (vendorId: string) => 
-    http.patch<VendorProfile>(`/api/admin/vendors/${vendorId}/verify`, {}),
+  verifyVendor: (id: string, isVerified: boolean) => 
+    http.patch<VendorProfile>(`/api/admin/vendors/${id}/verify`, { isVerified }),
 };

@@ -70,6 +70,13 @@ export default async function DashboardOverview() {
       {user.role === "admin" && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
           <DashboardCard 
+            title="Admin Overview" 
+            desc="View platform statistics and charts." 
+            link="/dashboard/admin" 
+            color="#3b82f6" 
+            icon="📊" 
+          />
+          <DashboardCard 
             title="Verify Vendors" 
             desc="Review and approve new vendor accounts." 
             link="/dashboard/admin/vendors" 
