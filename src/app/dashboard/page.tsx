@@ -8,7 +8,7 @@ export default async function DashboardOverview() {
     headers: await headers(),
   });
 
-  const user = session?.user;
+  const user = session?.user as any;
   if (!user) return null;
 
   return (

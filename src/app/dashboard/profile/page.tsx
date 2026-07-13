@@ -11,7 +11,7 @@ export default async function ProfilePage() {
   });
   
   if (!session?.user) return null;
-  const user = session.user;
+  const user = session.user as any;
 
   return (
     <div style={{ maxWidth: "800px" }}>

@@ -20,7 +20,7 @@ export default async function DashboardLayout({
     redirect("/login?callbackUrl=/dashboard");
   }
 
-  const user = session.user;
+  const user = session.user as any;
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--gray-50)" }}>
