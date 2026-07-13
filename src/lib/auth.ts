@@ -37,7 +37,7 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        before: (user) => {
+        before: async (user) => {
           const requestedRole = (user as any).accountType || (user as any).role;
           const role = (requestedRole === "vendor" || requestedRole === "customer") ? requestedRole : "customer";
           return {
