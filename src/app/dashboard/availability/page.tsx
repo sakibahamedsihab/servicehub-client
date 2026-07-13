@@ -38,7 +38,7 @@ export default async function AvailabilityPage() {
         </p>
       </header>
 
-      <AvailabilityForm initialData={availability} />
+      <AvailabilityForm vendorId={session.user.id} initialData={availability} />
     </div>
   );
 }

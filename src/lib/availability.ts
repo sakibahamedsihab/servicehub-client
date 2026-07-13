@@ -28,14 +28,14 @@ export interface Availability {
 
 export const availabilityApi = {
   /**
-   * Get the current vendor's availability configuration.
+   * Get the specified vendor's availability configuration.
    */
-  getMyAvailability: () => 
-    http.get<Availability>("/api/vendors/availability"),
+  getAvailability: (vendorId: string) => 
+    http.get<Availability>(`/api/vendors/${vendorId}/availability`, { auth: false }),
 
   /**
    * Create or update the current vendor's availability.
    */
-  upsertAvailability: (data: SetAvailabilityInput) => 
-    http.put<Availability>("/api/vendors/availability", data),
+  upsertAvailability: (vendorId: string, data: SetAvailabilityInput) => 
+    http.put<Availability>(`/api/vendors/${vendorId}/availability`, data),
 };
