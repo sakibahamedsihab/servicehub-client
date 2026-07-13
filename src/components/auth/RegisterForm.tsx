@@ -70,7 +70,8 @@ export function RegisterForm() {
         name: form.name.trim(),
         email: form.email,
         password: form.password,
-      });
+        accountType: form.role,
+      } as any);
       if (error) {
         setErrors({ general: error.message ?? "Registration failed. Please try again." });
         return;

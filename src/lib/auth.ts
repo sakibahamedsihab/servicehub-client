@@ -9,6 +9,15 @@ export const auth = betterAuth({
   // ── Database ──────────────────────────────────────────────
   database: mongodbAdapter(db),
 
+  user: {
+    additionalFields: {
+      accountType: {
+        type: "string",
+        required: false,
+      },
+    },
+  },
+
   // ── Base URL ──────────────────────────────────────────────
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
@@ -20,9 +29,27 @@ export const auth = betterAuth({
 
   // ── Plugins ───────────────────────────────────────────────
   plugins: [
-    admin(),  // adds role management + admin endpoints
+    admin({ defaultRole: "customer" }),  // adds role management + admin endpoints, default to customer
     jwt(),    // issues JWT tokens for Express bridge (JWKS endpoint)
   ],
+
+  // ── Hooks ─────────────────────────────────────────────────
+  databaseHooks: {
+    user: {
+      create: {
+        before: (user) => {
+          const requestedRole = (user as any).accountType || (user as any).role;
+          const role = (requestedRole === "vendor" || requestedRole === "customer") ? requestedRole : "customer";
+          return {
+            data: {
+              ...user,
+              role,
+            }
+          };
+        }
+      }
+    }
+  },
 });
 
 // Exported types for use across the app
