@@ -140,7 +140,7 @@ export default async function ServiceDetailsPage({ params }: Props) {
               </div>
 
               {/* Slot Picker Component (Task 7.4) */}
-              <SlotPicker serviceId={service._id} />
+              <SlotPicker serviceId={service._id} vendorId={service.vendorId} />
             </div>
           </div>
         </div>

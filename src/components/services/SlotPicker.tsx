@@ -1,14 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { servicesApi, type ServiceSlots } from "@/lib/services";
+import { bookingsApi } from "@/lib/bookings";
+import { authClient } from "@/lib/auth-client";
 import { Button } from "../ui/Button";
 
 interface SlotPickerProps {
   serviceId: string;
+  vendorId: string;
 }
 
-export function SlotPicker({ serviceId }: SlotPickerProps) {
+export function SlotPicker({ serviceId, vendorId }: SlotPickerProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { data: session } = authClient.useSession();
+
   const [selectedDate, setSelectedDate] = useState(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -19,6 +27,10 @@ export function SlotPicker({ serviceId }: SlotPickerProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Cache slots by date to prevent refetching when toggling dates
   const [cache, setCache] = useState<Record<string, ServiceSlots>>({});
@@ -59,14 +71,53 @@ export function SlotPicker({ serviceId }: SlotPickerProps) {
     };
   }, [serviceId, selectedDate, cache]);
 
-  const handleBook = () => {
+  const handleBook = async () => {
     if (!selectedSlot || !slotsData) return;
+    
+    if (!session?.user) {
+      router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
+      return;
+    }
+
     const slot = slotsData.slots.find(s => s.startTime === selectedSlot);
     if (!slot) return;
 
-    // TODO (Task 7.5): Initiate booking flow
-    alert(`Booking initiated for ${selectedDate} at ${slot.startTime}`);
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+    setSubmitError(null);
+
+    try {
+      await bookingsApi.create({
+        serviceId,
+        vendorId,
+        date: selectedDate,
+        startTime: slot.startTime,
+      });
+      setSubmitStatus("success");
+    } catch (err: any) {
+      setSubmitStatus("error");
+      setSubmitError(err.message || "Failed to book appointment.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (submitStatus === "success") {
+    return (
+      <div style={{ background: "var(--gray-50)", border: "1.5px solid #10B981", padding: "2rem", marginBottom: "1.5rem", textAlign: "center" }}>
+        <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>✅</div>
+        <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--gray-900)", marginBottom: "0.5rem" }}>
+          Booking Requested!
+        </h3>
+        <p style={{ color: "var(--gray-700)", fontSize: "0.95rem", lineHeight: 1.6, margin: "0 0 1.5rem" }}>
+          Your appointment for <strong>{selectedDate}</strong> at <strong>{selectedSlot}</strong> has been sent to the vendor for confirmation.
+        </p>
+        <Button onClick={() => router.push("/dashboard/bookings")} fullWidth>
+          View My Bookings
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: "var(--gray-50)", border: "1px solid var(--border)", padding: "1.5rem", marginBottom: "1.5rem" }}>
@@ -135,7 +186,12 @@ export function SlotPicker({ serviceId }: SlotPickerProps) {
       </div>
 
       <div style={{ marginTop: "1.5rem", borderTop: "1px solid var(--border)", paddingTop: "1.5rem" }}>
-        <Button fullWidth disabled={!selectedSlot} onClick={handleBook}>
+        {submitError && (
+          <div style={{ color: "#EF4444", fontSize: "0.85rem", textAlign: "center", marginBottom: "1rem", background: "rgba(239, 68, 68, 0.1)", padding: "0.5rem" }}>
+            {submitError}
+          </div>
+        )}
+        <Button fullWidth disabled={!selectedSlot || isSubmitting} loading={isSubmitting} onClick={handleBook}>
           Book Appointment
         </Button>
         <p style={{ fontSize: "0.75rem", color: "var(--gray-500)", textAlign: "center", marginTop: "1rem", margin: "1rem 0 0" }}>
