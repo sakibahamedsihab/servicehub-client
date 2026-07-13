@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
+import { DemoLogin } from "./DemoLogin";
 
 interface FormState {
   email: string;
@@ -160,6 +161,8 @@ export function LoginForm() {
           Create one
         </Link>
       </p>
+
+      <DemoLogin onComplete={() => router.push("/dashboard")} />
     </form>
   );
 }
