@@ -8,6 +8,7 @@ import { servicesApi } from "@/lib/services";
 import type { Booking, BookingStatus } from "@/lib/bookings";
 import type { Service } from "@/lib/services";
 import { Button } from "@/components/ui/Button";
+import { ReviewForm } from "./ReviewForm";
 
 interface BookingCardProps {
   booking: Booking;
@@ -27,6 +28,8 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [hasReviewed, setHasReviewed] = useState(false);
 
   useEffect(() => {
     servicesApi.getById(booking.serviceId)
@@ -141,6 +144,30 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
           <Button variant="danger" size="sm" onClick={() => handleAction("cancel")} disabled={loading}>
             <XCircle size={16} /> Cancel Booking
           </Button>
+        </div>
+      )}
+      {role === "customer" && booking.status === "completed" && !hasReviewed && (
+        <div style={{ padding: "1rem 1.5rem", background: "var(--white)", borderTop: "1px solid var(--border)" }}>
+          {!isReviewing ? (
+            <Button variant="secondary" onClick={() => setIsReviewing(true)}>
+              Leave a Review
+            </Button>
+          ) : (
+            <ReviewForm
+              bookingId={booking._id}
+              onCancel={() => setIsReviewing(false)}
+              onSuccess={() => {
+                setIsReviewing(false);
+                setHasReviewed(true);
+              }}
+            />
+          )}
+        </div>
+      )}
+      
+      {hasReviewed && (
+        <div style={{ padding: "1rem 1.5rem", background: "#F0FDF4", color: "#166534", borderTop: "1px solid #DCFCE7", fontSize: "0.9rem", fontWeight: 600 }}>
+          ✓ You have submitted a review for this booking.
         </div>
       )}
     </div>

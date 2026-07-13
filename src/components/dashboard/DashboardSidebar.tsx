@@ -57,6 +57,7 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
           { name: "My Services", href: "/dashboard/services", icon: Briefcase },
           { name: "Availability", href: "/dashboard/availability", icon: Clock },
           { name: "Booking Requests", href: "/dashboard/booking-requests", icon: Calendar },
+          { name: "My Bookings", href: "/dashboard/bookings", icon: Calendar },
           { name: "Profile Settings", href: "/dashboard/profile", icon: Settings },
         ];
       case "admin":
@@ -69,7 +70,8 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
       case "customer":
       default:
         return [
-          { name: "My Bookings", href: "/dashboard", icon: Calendar },
+          { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
+          { name: "My Bookings", href: "/dashboard/bookings", icon: Calendar },
           { name: "Profile Settings", href: "/dashboard/profile", icon: Settings },
         ];
     }
