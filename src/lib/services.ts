@@ -42,6 +42,7 @@ export const servicesApi = {
    */
   list: (params?: {
     category?: string;
+    vendorId?: string;
     minPrice?: number;
     maxPrice?: number;
     sort?: "price" | "priceDesc" | "rating" | "createdAt";
@@ -50,6 +51,7 @@ export const servicesApi = {
   }) => {
     const query = new URLSearchParams();
     if (params?.category) query.append("category", params.category);
+    if (params?.vendorId) query.append("vendorId", params.vendorId);
     if (params?.minPrice) query.append("minPrice", params.minPrice.toString());
     if (params?.maxPrice) query.append("maxPrice", params.maxPrice.toString());
     if (params?.sort) query.append("sort", params.sort);

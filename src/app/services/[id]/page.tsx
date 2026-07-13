@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { Suspense } from "react";
 import { RelatedServices } from "@/components/services/RelatedServices";
 import type { Service } from "@/lib/services";
@@ -114,7 +115,11 @@ export default async function ServiceDetailsPage({ params }: Props) {
                     🏢
                   </div>
                   <div>
-                    <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 0.25rem" }}>{vendor.businessName}</h3>
+                    <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 0.25rem" }}>
+                      <Link href={`/vendors/${vendor.userId}`} style={{ color: "var(--gray-900)", textDecoration: "none" }}>
+                        {vendor.businessName}
+                      </Link>
+                    </h3>
                     <p style={{ fontSize: "0.9rem", color: "var(--gray-500)", margin: "0 0 1rem" }}>Member since {new Date(vendor.createdAt).getFullYear()}</p>
                     <p style={{ fontSize: "0.95rem", color: "var(--gray-700)", lineHeight: 1.6, margin: 0 }}>
                       {vendor.bio || "No bio provided."}
