@@ -12,9 +12,14 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  let session = null;
+  try {
+    session = await auth.api.getSession({
+      headers: await headers(),
+    });
+  } catch (error) {
+    console.error("Failed to parse session (likely corrupted cookie):", error);
+  }
 
   if (!session?.user) {
     redirect("/login?callbackUrl=/dashboard");

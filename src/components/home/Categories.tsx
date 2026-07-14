@@ -13,7 +13,7 @@ const CATEGORIES = [
 
 export function Categories() {
   return (
-    <section style={{ padding: "5rem 0", background: "var(--gray-50)", borderTop: "1.5px solid var(--border)", borderBottom: "1.5px solid var(--border)" }}>
+    <section className="py-10 md:py-20" style={{ background: "var(--gray-50)", borderTop: "1.5px solid var(--border)", borderBottom: "1.5px solid var(--border)" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.5rem", flexWrap: "wrap", gap: "1rem" }}>

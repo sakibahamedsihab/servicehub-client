@@ -18,7 +18,7 @@ function StarRating({ rating }: { rating: number }) {
 
 export function FeaturedServices() {
   return (
-    <section style={{ padding: "5rem 0", background: "var(--gray-50)", borderTop: "1.5px solid var(--border)", borderBottom: "1.5px solid var(--border)" }}>
+    <section className="py-10 md:py-20" style={{ background: "var(--gray-50)", borderTop: "1.5px solid var(--border)", borderBottom: "1.5px solid var(--border)" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem" }}>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.5rem", flexWrap: "wrap", gap: "1rem" }}>
           <div>
@@ -50,7 +50,7 @@ export function FeaturedServices() {
                 }}
               >
                 {/* Image placeholder */}
-                <div style={{ height: "160px", background: "linear-gradient(135deg, var(--orange-muted) 0%, var(--gray-100) 100%)", position: "relative" }}>
+                <div className="aspect-video" style={{ background: "linear-gradient(135deg, var(--orange-muted) 0%, var(--gray-100) 100%)", position: "relative" }}>
                   <span style={{ position: "absolute", bottom: "0.75rem", left: "0.75rem", background: "var(--orange)", color: "#fff", padding: "0.25rem 0.6rem", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.04em" }}>
                     {category.toUpperCase()}
                   </span>

@@ -96,13 +96,15 @@ export default function AdminUsersPage() {
                   {format(new Date(user.createdAt), "MMM d, yyyy")}
                 </td>
                 <td style={{ padding: "1rem", textAlign: "right" }}>
-                  <Button 
-                    variant={user.banned ? "secondary" : "danger"} 
-                    onClick={() => handleToggleBan(user.id, user.banned)}
-                    style={{ padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
-                  >
-                    {user.banned ? "Unban" : "Ban"}
-                  </Button>
+                  {user.role !== "admin" && (
+                    <Button 
+                      variant={user.banned ? "secondary" : "danger"} 
+                      onClick={() => handleToggleBan(user.id, user.banned)}
+                      style={{ padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
+                    >
+                      {user.banned ? "Unban" : "Ban"}
+                    </Button>
+                  )}
                 </td>
               </tr>
             ))}

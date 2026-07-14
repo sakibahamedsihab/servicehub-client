@@ -6,11 +6,11 @@ export function ForVendorsCTA() {
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem" }}>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "1fr",
           border: "1.5px solid var(--border)",
-        }}>
+        }} className="md:grid-cols-2">
           {/* Left — text */}
-          <div style={{ padding: "3.5rem", display: "flex", flexDirection: "column", gap: "1.25rem", justifyContent: "center" }}>
+          <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1.25rem", justifyContent: "center" }} className="md:p-14">
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <div style={{ width: "24px", height: "3px", background: "var(--orange)" }} />
               <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--orange)", textTransform: "uppercase", letterSpacing: "0.1em" }}>For Vendors</span>
@@ -50,13 +50,13 @@ export function ForVendorsCTA() {
           {/* Right — orange panel */}
           <div style={{
             background:    "var(--orange)",
-            padding:       "3.5rem",
+            padding:       "1.5rem",
             display:       "flex",
             flexDirection: "column",
             justifyContent:"center",
             gap:           "1.5rem",
-            borderLeft:    "1.5px solid var(--border)",
-          }}>
+            borderTop:     "1.5px solid var(--border)",
+          }} className="md:p-14 md:border-l-[1.5px] md:border-t-0">
             {[
               { num: "180+", label: "Active Vendors"   },
               { num: "98%",  label: "Satisfaction Rate" },

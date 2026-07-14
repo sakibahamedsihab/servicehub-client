@@ -147,7 +147,7 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "0.85rem 1rem",
-                  borderRadius: "8px",
+                  borderRadius: "0",
                   background: isActive ? "rgba(217,119,87,0.15)" : "transparent",
                   color: isActive ? "var(--orange)" : "var(--gray-300)",
                   textDecoration: "none",

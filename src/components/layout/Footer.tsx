@@ -26,11 +26,7 @@ export function Footer() {
       <div style={{ height: "3px", background: "var(--orange)" }} />
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3.5rem 1.5rem 2rem" }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "2fr repeat(3, 1fr)",
-          gap: "2.5rem",
-        }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "2.5rem" }}>
           {/* Brand column */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>

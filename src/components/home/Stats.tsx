@@ -16,10 +16,8 @@ export function Stats() {
               style={{
                 padding:      "2rem",
                 textAlign:    "center",
-                borderLeft:   i === 0 ? "1px solid #404040" : "none",
-                borderRight:  "1px solid #404040",
-                borderTop:    "1px solid #404040",
-                borderBottom: "1px solid #404040",
+                border:       "1px solid #404040",
+                marginLeft:   i > 0 ? "-1px" : "0",
               }}
             >
               <div style={{ fontSize: "1.75rem", marginBottom: "0.5rem" }}>{icon}</div>

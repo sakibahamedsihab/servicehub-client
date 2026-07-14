@@ -18,7 +18,7 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section style={{ padding: "5rem 0", background: "var(--white)" }}>
+    <section className="py-10 md:py-20" style={{ background: "var(--white)" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
@@ -41,11 +41,9 @@ export function HowItWorks() {
             <div
               key={num}
               style={{
-                padding:     "2.5rem 2rem",
-                borderLeft:  i === 0 ? "1.5px solid var(--border)" : "none",
-                borderRight: "1.5px solid var(--border)",
-                borderTop:   "1.5px solid var(--border)",
-                borderBottom:"1.5px solid var(--border)",
+                padding:     "2rem",
+                border:      "1.5px solid var(--border)",
+                marginLeft:  i > 0 ? "-1.5px" : "0",
                 position:    "relative",
               }}
             >

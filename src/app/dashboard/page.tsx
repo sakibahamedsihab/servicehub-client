@@ -102,7 +102,7 @@ function DashboardCard({ title, desc, link, color, icon }: { title: string, desc
       <div style={{
         background: "var(--white)",
         border: "1px solid var(--border)",
-        borderRadius: "12px",
+        borderRadius: "0",
         padding: "1.5rem",
         height: "100%",
         display: "flex",

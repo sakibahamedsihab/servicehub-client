@@ -1,3 +1,5 @@
+import { FadeIn } from "@/components/ui/FadeIn";
+
 export const metadata = {
   title: "How ServiceHub Works — Simple Booking in 3 Steps",
   description: "Learn how to find services, pick time slots, and book local vendors on ServiceHub.",
@@ -34,7 +36,7 @@ export default function HowItWorksPage() {
   return (
     <main style={{ paddingTop: "63px" }}>
       {/* Header */}
-      <section style={{ padding: "4rem 0", background: "var(--gray-50)", borderBottom: "1.5px solid var(--border)" }}>
+      <FadeIn><section style={{ padding: "4rem 0", background: "var(--gray-50)", borderBottom: "1.5px solid var(--border)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1rem" }}>
             <div style={{ width: "24px", height: "3px", background: "var(--orange)" }} />
@@ -47,23 +49,22 @@ export default function HowItWorksPage() {
             From first search to booked appointment — here's everything you need to know.
           </p>
         </div>
-      </section>
+      </section></FadeIn>
 
       {/* Steps */}
-      <section style={{ padding: "4rem 0", background: "var(--white)" }}>
+      <FadeIn delay={0.1}><section style={{ padding: "4rem 0", background: "var(--white)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 1.5rem", display: "flex", flexDirection: "column", gap: "0" }}>
           {STEPS.map(({ num, icon, title, desc, tip }, i) => (
             <div
               key={num}
               style={{
                 display:     "grid",
-                gridTemplateColumns: "80px 1fr",
-                gap:         "2rem",
-                padding:     "2.5rem 0",
+                gridTemplateColumns: "60px 1fr",
+                gap:         "1rem",
+                padding:     "1.5rem 0",
                 borderBottom: i < STEPS.length - 1 ? "1.5px solid var(--border)" : "none",
                 alignItems:  "flex-start",
-              }}
-            >
+              }} className="md:gap-8 md:grid-cols-[80px_1fr] md:py-10">
               {/* Number + icon */}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
                 <div style={{ width: "52px", height: "52px", background: "var(--orange)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: "1rem" }}>
@@ -83,7 +84,7 @@ export default function HowItWorksPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section></FadeIn>
     </main>
   );
 }

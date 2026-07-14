@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
+import { User, ChevronDown, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
   { href: "/services",    label: "Services"    },
@@ -17,11 +19,23 @@ export function Navbar() {
   const { data: session } = useSession();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
@@ -73,7 +87,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", flex: 1, justifyContent: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", flex: 1, justifyContent: "center" }} className="nav-desktop-links">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
@@ -96,37 +110,71 @@ export function Navbar() {
         {/* Auth buttons */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
           {session?.user ? (
-            <>
-              <Link
-                href="/dashboard"
+            <div ref={profileRef} style={{ position: "relative" }} className="nav-profile">
+              <button
+                onClick={() => setProfileOpen(!profileOpen)}
                 style={{
-                  padding: "0.45rem 1rem",
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "var(--gray-700)",
-                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.35rem 0.75rem",
+                  background: "none",
                   border: "1.5px solid var(--border)",
+                  cursor: "pointer",
+                  color: "var(--gray-700)",
+                  fontSize: "0.85rem",
+                  fontWeight: 500,
                   transition: "all 0.15s ease",
                 }}
               >
-                Dashboard
-              </Link>
-              <button
-                onClick={handleSignOut}
-                style={{
-                  padding:    "0.45rem 1rem",
-                  fontSize:   "0.85rem",
-                  fontWeight: 600,
-                  background: "var(--orange)",
-                  color:      "#fff",
-                  border:     "none",
-                  cursor:     "pointer",
-                  transition: "background 0.15s ease",
-                }}
-              >
-                Sign Out
+                <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "var(--orange-muted)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <User size={16} color="var(--orange)" />
+                </div>
+                <span style={{ maxWidth: "120px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {session.user.name}
+                </span>
+                <ChevronDown size={14} style={{ transition: "transform 0.2s", transform: profileOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
               </button>
-            </>
+
+              {profileOpen && (
+                <div style={{ position: "absolute", top: "calc(100% + 8px)", right: 0, minWidth: "180px", background: "var(--white)", border: "1.5px solid var(--border)", boxShadow: "0 8px 24px rgba(0,0,0,0.10)", zIndex: 200, display: "flex", flexDirection: "column", padding: "0.35rem" }}>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setProfileOpen(false)}
+                    style={{
+                      padding: "0.65rem 0.85rem",
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color: "var(--gray-700)",
+                      textDecoration: "none",
+                      transition: "background 0.1s",
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "var(--gray-50)"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => { handleSignOut(); setProfileOpen(false); }}
+                    style={{
+                      padding: "0.65rem 0.85rem",
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color: "var(--error)",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      transition: "background 0.1s",
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#FEF2F2"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link
@@ -171,54 +219,150 @@ export function Navbar() {
               cursor:     "pointer",
               padding:    "0.25rem",
               color:      "var(--gray-700)",
-              fontSize:   "1.25rem",
             }}
             className="nav-hamburger"
           >
-            {menuOpen ? "✕" : "☰"}
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div style={{
-          borderTop:  "1.5px solid var(--border)",
-          background: "var(--white)",
-          padding:    "1rem 1.5rem",
-          display:    "flex",
-          flexDirection: "column",
-          gap:        "0.5rem",
-        }}>
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
+      {/* Mobile dropdown panel */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={() => setMenuOpen(false)}
               style={{
-                padding:        "0.6rem 0",
-                textDecoration: "none",
-                fontSize:       "0.9rem",
-                fontWeight:     isActive(href) ? 700 : 500,
-                color:          isActive(href) ? "var(--orange)" : "var(--gray-700)",
-                borderBottom:   "1px solid var(--border)",
+                position: "fixed",
+                inset: 0,
+                background: "rgba(0,0,0,0.4)",
+                zIndex: 90,
+              }}
+            />
+
+            {/* Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                right: 0,
+                background: "var(--white)",
+                borderTop: "1.5px solid var(--border)",
+                boxShadow: "0 12px 24px rgba(0,0,0,0.10)",
+                zIndex: 95,
+                padding: "1rem 1.5rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.25rem",
               }}
             >
-              {label}
-            </Link>
-          ))}
-          {!session?.user && (
-            <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-              <Link href="/login"    onClick={() => setMenuOpen(false)} style={{ flex: 1, textAlign: "center", padding: "0.6rem", border: "1.5px solid var(--border)", textDecoration: "none", fontWeight: 600, fontSize: "0.875rem", color: "var(--gray-700)" }}>Sign In</Link>
-              <Link href="/register" onClick={() => setMenuOpen(false)} style={{ flex: 1, textAlign: "center", padding: "0.6rem", background: "var(--orange)", textDecoration: "none", fontWeight: 600, fontSize: "0.875rem", color: "#fff" }}>Get Started</Link>
-            </div>
-          )}
-        </div>
-      )}
+              {NAV_LINKS.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    padding: "0.75rem 0",
+                    textDecoration: "none",
+                    fontSize: "0.95rem",
+                    fontWeight: isActive(href) ? 700 : 500,
+                    color: isActive(href) ? "var(--orange)" : "var(--gray-700)",
+                    borderBottom: "1px solid var(--border)",
+                  }}
+                >
+                  {label}
+                </Link>
+              ))}
+              {session?.user ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "0.75rem" }}>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      display: "block",
+                      textAlign: "center",
+                      padding: "0.75rem",
+                      border: "1.5px solid var(--border)",
+                      textDecoration: "none",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      color: "var(--gray-700)",
+                    }}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => { handleSignOut(); setMenuOpen(false); }}
+                    style={{
+                      padding: "0.75rem",
+                      background: "var(--orange)",
+                      border: "none",
+                      cursor: "pointer",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      color: "#fff",
+                    }}
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.75rem" }}>
+                  <Link
+                    href="/login"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      padding: "0.75rem",
+                      border: "1.5px solid var(--border)",
+                      textDecoration: "none",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      color: "var(--gray-700)",
+                    }}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      padding: "0.75rem",
+                      background: "var(--orange)",
+                      textDecoration: "none",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      color: "#fff",
+                    }}
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       <style>{`
         @media (max-width: 768px) {
           .nav-hamburger { display: flex !important; }
+          .nav-profile { display: none !important; }
+          .nav-desktop-links { display: none !important; }
         }
       `}</style>
     </header>

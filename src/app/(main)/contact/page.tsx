@@ -1,3 +1,5 @@
+import { FadeIn } from "@/components/ui/FadeIn";
+
 export const metadata = {
   title: "Contact ServiceHub — Get in Touch",
   description: "Reach out to the ServiceHub team for support, vendor inquiries, or partnership opportunities.",
@@ -6,7 +8,7 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main style={{ paddingTop: "63px" }}>
-      <section style={{ padding: "4rem 0", background: "var(--gray-50)", borderBottom: "1.5px solid var(--border)" }}>
+      <FadeIn><section style={{ padding: "4rem 0", background: "var(--gray-50)", borderBottom: "1.5px solid var(--border)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1rem" }}>
             <div style={{ width: "24px", height: "3px", background: "var(--orange)" }} />
@@ -19,11 +21,11 @@ export default function ContactPage() {
             Questions? Issues? Partnership ideas? We read every message and respond within 24 hours.
           </p>
         </div>
-      </section>
+      </section></FadeIn>
 
-      <section style={{ padding: "4rem 0", background: "var(--white)" }}>
+      <FadeIn delay={0.1}><section style={{ padding: "4rem 0", background: "var(--white)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 1.5rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem" }}>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "3rem" }}>
             {/* Contact info */}
             <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
               {[
@@ -60,7 +62,7 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section></FadeIn>
     </main>
   );
 }

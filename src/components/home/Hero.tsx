@@ -4,15 +4,14 @@ export function Hero() {
   return (
     <section
       style={{
-        paddingTop:    "calc(63px + 5rem)",
-        paddingBottom: "5rem",
         background:    "var(--white)",
         position:      "relative",
         overflow:      "hidden",
       }}
+      className="pt-[calc(63px+2.5rem)] pb-10 md:pt-[calc(63px+5rem)] md:pb-20"
     >
       {/* Background geometric accent */}
-      <div style={{
+      <div className="hidden md:block" style={{
         position:   "absolute",
         top:        0,
         right:      0,
@@ -22,7 +21,7 @@ export function Hero() {
         clipPath:   "polygon(15% 0, 100% 0, 100% 100%, 0% 100%)",
         zIndex:     0,
       }} />
-      <div style={{
+      <div className="hidden md:block" style={{
         position:   "absolute",
         top:        "2rem",
         right:      "3rem",

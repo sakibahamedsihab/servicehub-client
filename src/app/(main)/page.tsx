@@ -7,6 +7,8 @@ import { Stats }            from "@/components/home/Stats";
 import { Testimonials }     from "@/components/home/Testimonials";
 import { FAQ }              from "@/components/home/FAQ";
 import { Newsletter }       from "@/components/home/Newsletter";
+import { FadeIn }           from "@/components/ui/FadeIn";
+import { Stagger }          from "@/components/ui/Stagger";
 
 export const metadata = {
   title: "ServiceHub — Book Local Services Instantly",
@@ -16,15 +18,15 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main>
-      <Hero />
-      <Categories />
-      <HowItWorks />
-      <FeaturedServices />
-      <ForVendorsCTA />
-      <Stats />
-      <Testimonials />
-      <FAQ />
-      <Newsletter />
+      <FadeIn><Hero /></FadeIn>
+      <FadeIn><Categories /></FadeIn>
+      <FadeIn><HowItWorks /></FadeIn>
+      <FadeIn><FeaturedServices /></FadeIn>
+      <FadeIn><ForVendorsCTA /></FadeIn>
+      <FadeIn><Stats /></FadeIn>
+      <FadeIn><Testimonials /></FadeIn>
+      <FadeIn><FAQ /></FadeIn>
+      <FadeIn><Newsletter /></FadeIn>
     </main>
   );
 }

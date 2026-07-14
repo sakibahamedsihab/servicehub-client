@@ -1,3 +1,5 @@
+import { FadeIn } from "@/components/ui/FadeIn";
+
 export const metadata = {
   title: "About ServiceHub — Our Mission & Story",
   description: "Learn about ServiceHub's mission to connect customers with trusted local service providers.",
@@ -7,7 +9,7 @@ export default function AboutPage() {
   return (
     <main style={{ paddingTop: "63px" }}>
       {/* Hero */}
-      <section style={{ padding: "4rem 0", background: "var(--gray-50)", borderBottom: "1.5px solid var(--border)" }}>
+      <FadeIn><section style={{ padding: "4rem 0", background: "var(--gray-50)", borderBottom: "1.5px solid var(--border)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1rem" }}>
             <div style={{ width: "24px", height: "3px", background: "var(--orange)" }} />
@@ -20,12 +22,12 @@ export default function AboutPage() {
             ServiceHub was founded on a simple belief: booking a local service should be as easy as ordering a meal. No phone tag, no uncertainty, no middlemen.
           </p>
         </div>
-      </section>
+      </section></FadeIn>
 
       {/* Mission */}
-      <section style={{ padding: "4rem 0", background: "var(--white)" }}>
+      <FadeIn delay={0.1}><section style={{ padding: "4rem 0", background: "var(--white)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 1.5rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem" }}>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "3rem" }}>
             <div>
               <div style={{ width: "40px", height: "40px", background: "var(--orange)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.25rem", marginBottom: "1rem" }}>🎯</div>
               <h2 style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--gray-900)", margin: "0 0 0.75rem" }}>Our Mission</h2>
@@ -42,12 +44,12 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section></FadeIn>
 
       {/* Stats bar */}
-      <section style={{ padding: "3rem 0", background: "var(--gray-900)", borderTop: "1.5px solid var(--border)" }}>
+      <FadeIn delay={0.2}><section style={{ padding: "3rem 0", background: "var(--gray-900)", borderTop: "1.5px solid var(--border)" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 1.5rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0", textAlign: "center" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: "0", textAlign: "center" }}>
             {[{ num: "2019", label: "Founded" }, { num: "180+", label: "Vendors" }, { num: "12K+", label: "Bookings" }].map(({ num, label }, i) => (
               <div key={label} style={{ padding: "2rem", borderLeft: i > 0 ? "1px solid #404040" : "none" }}>
                 <div style={{ fontSize: "2rem", fontWeight: 900, color: "var(--orange)", letterSpacing: "-0.03em" }}>{num}</div>
@@ -56,7 +58,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section></FadeIn>
     </main>
   );
 }
