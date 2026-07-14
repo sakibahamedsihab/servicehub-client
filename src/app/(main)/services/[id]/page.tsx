@@ -6,6 +6,8 @@ import type { Service } from "@/lib/services";
 import type { VendorProfile } from "@/lib/vendors";
 import { Button } from "@/components/ui/Button";
 import { ServiceReviews } from "@/components/services/ServiceReviews";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 import { SlotPicker } from "@/components/services/SlotPicker";
 
@@ -49,31 +51,37 @@ export default async function ServiceDetailsPage({ params }: Props) {
   }
 
   const { service, vendor } = data;
+  
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const user = session?.user as any;
+  const isOwner = user?.id === service.vendorId;
 
   return (
-    <main style={{ paddingTop: "63px", minHeight: "100vh", background: "var(--gray-50)", paddingBottom: "4rem" }}>
+    <main className="pt-16 min-h-screen bg-gray-50 pb-16">
       {/* Header Banner */}
-      <div style={{ background: "var(--gray-900)", padding: "3rem 1.5rem" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ display: "inline-block", background: "var(--orange)", color: "#fff", padding: "0.25rem 0.75rem", fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1rem" }}>
+      <div className="bg-gray-900 py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="inline-block bg-orange-500 text-white px-3 py-1 text-xs font-bold uppercase tracking-widest mb-4">
             {service.categoryId}
           </div>
-          <h1 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "#fff", margin: "0 0 1rem", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-white m-0 mb-4 tracking-tight leading-tight">
             {service.title}
           </h1>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <span style={{ color: "var(--orange)", fontSize: "1.2rem" }}>★</span>
-              <span style={{ color: "#fff", fontWeight: 700 }}>{(service.rating || 0).toFixed(1)}</span>
-              <span style={{ color: "#a3a3a3", fontSize: "0.9rem" }}>({service.reviewCount || 0} reviews)</span>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-1.5">
+              <span className="text-orange-500 text-xl">★</span>
+              <span className="text-white font-bold">{(service.rating || 0).toFixed(1)}</span>
+              <span className="text-gray-400 text-sm">({service.reviewCount || 0} reviews)</span>
             </div>
             {vendor && (
               <>
-                <span style={{ color: "#525252" }}>•</span>
-                <span style={{ color: "#fff", fontSize: "0.9rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span className="text-gray-600">•</span>
+                <span className="text-white text-sm flex items-center gap-1.5">
                   <span>🏢</span> {vendor.businessName}
                   {vendor.isVerified && (
-                    <span style={{ background: "rgba(217,119,87,0.2)", color: "var(--orange)", padding: "2px 6px", fontSize: "0.7rem", fontWeight: 700, borderRadius: 0 }}>VERIFIED</span>
+                    <span className="bg-orange-500/20 text-orange-500 px-1.5 py-0.5 text-xs font-bold ml-1">VERIFIED</span>
                   )}
                 </span>
               </>
@@ -82,47 +90,47 @@ export default async function ServiceDetailsPage({ params }: Props) {
         </div>
       </div>
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-        <div className="service-details-layout">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Main Column */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "3rem" }}>
+          <div className="flex flex-col gap-8 flex-1 w-full lg:w-2/3">
             
             {/* Image Gallery Placeholder */}
-            <div style={{ border: "1.5px solid var(--border)", background: "var(--white)", padding: "0.5rem" }}>
-              <div style={{ height: "400px", background: "linear-gradient(135deg, var(--orange-muted) 0%, var(--gray-100) 100%)", position: "relative" }}>
+            <div className="border-2 border-gray-200 bg-white p-2">
+              <div className="h-[300px] md:h-[400px] bg-gradient-to-br from-orange-100 to-gray-100 relative">
                 {service.images?.[0] ? (
-                  <img src={service.images[0]} alt="Primary" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <img src={service.images[0]} alt="Primary" className="w-full h-full object-cover" />
                 ) : (
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--gray-500)" }}>No images provided</div>
+                  <div className="flex items-center justify-center h-full text-gray-500">No images provided</div>
                 )}
               </div>
             </div>
 
             {/* Description */}
-            <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "2rem" }}>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--gray-900)", marginBottom: "1rem" }}>About This Service</h2>
-              <div style={{ fontSize: "1rem", color: "var(--gray-700)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
+            <div className="bg-white border-2 border-gray-200 p-6 md:p-8">
+              <h2 className="text-xl font-extrabold text-gray-900 mb-4">About This Service</h2>
+              <div className="text-base text-gray-700 leading-relaxed whitespace-pre-wrap">
                 {service.description}
               </div>
             </div>
 
             {/* Vendor Profile Snippet */}
             {vendor && (
-              <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "2rem" }}>
-                <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--gray-900)", marginBottom: "1.5rem" }}>About The Vendor</h2>
-                <div style={{ display: "flex", gap: "1.5rem" }}>
-                  <div style={{ width: "64px", height: "64px", background: "var(--gray-100)", border: "1.5px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem" }}>
+              <div className="bg-white border-2 border-gray-200 p-6 md:p-8">
+                <h2 className="text-xl font-extrabold text-gray-900 mb-6">About The Vendor</h2>
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="w-16 h-16 bg-gray-100 border-2 border-gray-200 flex items-center justify-center text-2xl shrink-0">
                     🏢
                   </div>
                   <div>
-                    <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 0.25rem" }}>
-                      <Link href={`/vendors/${vendor.userId}`} style={{ color: "var(--gray-900)", textDecoration: "none" }}>
+                    <h3 className="text-lg font-bold m-0 mb-1">
+                      <Link href={`/vendors/${vendor.userId}`} className="text-gray-900 no-underline hover:text-orange-500 transition-colors">
                         {vendor.businessName}
                       </Link>
                     </h3>
-                    <p style={{ fontSize: "0.9rem", color: "var(--gray-500)", margin: "0 0 1rem" }}>Member since {new Date(vendor.createdAt).getFullYear()}</p>
-                    <p style={{ fontSize: "0.95rem", color: "var(--gray-700)", lineHeight: 1.6, margin: 0 }}>
+                    <p className="text-sm text-gray-500 m-0 mb-4">Member since {new Date(vendor.createdAt).getFullYear()}</p>
+                    <p className="text-base text-gray-700 leading-relaxed m-0">
                       {vendor.bio || "No bio provided."}
                     </p>
                   </div>
@@ -135,27 +143,33 @@ export default async function ServiceDetailsPage({ params }: Props) {
           </div>
 
           {/* Right Sticky Column (Booking Card) */}
-          <div style={{ position: "sticky", top: "100px" }}>
-            <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "2rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid var(--border)" }}>
+          <div className="sticky top-24 w-full lg:w-1/3 shrink-0">
+            <div className="bg-white border-2 border-gray-200 p-6 md:p-8 shadow-sm">
+              <div className="flex justify-between items-baseline mb-6 pb-6 border-b border-gray-200">
                 <div>
-                  <div style={{ fontSize: "0.85rem", color: "var(--gray-500)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.25rem" }}>Price</div>
-                  <div style={{ fontSize: "2rem", fontWeight: 800, color: "var(--gray-900)", lineHeight: 1 }}>${service.price}</div>
+                  <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Price</div>
+                  <div className="text-3xl font-extrabold text-gray-900 leading-none">${service.price}</div>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "0.85rem", color: "var(--gray-500)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.25rem" }}>Duration</div>
-                  <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--gray-700)", lineHeight: 1 }}>{service.durationMinutes} min</div>
+                <div className="text-right">
+                  <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Duration</div>
+                  <div className="text-xl font-bold text-gray-700 leading-none">{service.durationMinutes} min</div>
                 </div>
               </div>
 
               {/* Slot Picker Component (Task 7.4) */}
-              <SlotPicker serviceId={service._id} vendorId={service.vendorId} />
+              {isOwner ? (
+                <div className="bg-orange-50 text-orange-700 p-4 rounded-lg font-bold text-center border border-orange-200 shadow-inner">
+                  You cannot book your own service.
+                </div>
+              ) : (
+                <SlotPicker serviceId={service._id} vendorId={service.vendorId} />
+              )}
             </div>
           </div>
         </div>
 
         {/* Related Services */}
-        <Suspense fallback={<div style={{ marginTop: "4rem", height: "300px", background: "var(--gray-100)", animation: "pulse 2s infinite" }} />}>
+        <Suspense fallback={<div className="mt-16 h-[300px] bg-gray-100 animate-pulse rounded-xl" />}>
           <RelatedServices category={service.categoryId} currentId={service._id} />
         </Suspense>
       </div>

@@ -59,55 +59,47 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
   const colors = STATUS_COLORS[booking.status];
 
   return (
-    <div style={{ background: "var(--white)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: "1.5rem", flex: 1 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col shadow-sm">
+      <div className="p-6 flex-1">
+        <div className="flex justify-between items-start gap-4 flex-wrap mb-4">
           <div>
             <span style={{ 
-              display: "inline-block", 
-              padding: "0.25rem 0.75rem", 
-              borderRadius: "100px", 
               background: colors.bg, 
               color: colors.text, 
-              fontSize: "0.8rem", 
-              fontWeight: 700, 
-              textTransform: "uppercase", 
-              letterSpacing: "0.05em",
-              marginBottom: "0.75rem"
-            }}>
+            }} className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-3">
               {booking.status}
             </span>
-            <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--gray-900)", margin: "0 0 0.5rem 0" }}>
+            <h3 className="text-xl font-bold text-gray-900 m-0 mb-2">
               {service ? service.title : "Loading service..."}
             </h3>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", color: "var(--gray-600)", fontSize: "0.95rem" }}>
-              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <div className="flex flex-wrap gap-4 text-gray-600 text-sm">
+              <span className="flex items-center gap-1.5">
                 <Calendar size={16} /> {format(new Date(booking.date), "MMMM d, yyyy")}
               </span>
-              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <span className="flex items-center gap-1.5">
                 <Clock size={16} /> {booking.startTime} - {booking.endTime}
               </span>
             </div>
           </div>
           
-          <div style={{ textAlign: "right", color: "var(--gray-500)", fontSize: "0.85rem" }}>
+          <div className="text-right text-gray-500 text-xs">
             Booking ID: <br />
-            <span style={{ fontFamily: "monospace", color: "var(--gray-700)" }}>{booking._id.slice(-8).toUpperCase()}</span>
+            <span className="font-mono text-gray-700">{booking._id.slice(-8).toUpperCase()}</span>
           </div>
         </div>
 
         {booking.notes && (
-          <div style={{ background: "var(--gray-50)", padding: "1rem", borderRadius: "8px", display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
-            <FileText size={18} color="var(--gray-500)" style={{ flexShrink: 0, marginTop: "2px" }} />
+          <div className="bg-gray-50 p-4 rounded-lg flex gap-3 mt-4 border border-gray-100">
+            <FileText size={18} className="text-gray-500 shrink-0 mt-0.5" />
             <div>
-              <span style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--gray-500)", textTransform: "uppercase", marginBottom: "0.25rem" }}>Notes from Customer</span>
-              <p style={{ margin: 0, fontSize: "0.95rem", color: "var(--gray-700)", lineHeight: 1.5 }}>{booking.notes}</p>
+              <span className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Notes from Customer</span>
+              <p className="m-0 text-sm text-gray-700 leading-relaxed">{booking.notes}</p>
             </div>
           </div>
         )}
 
         {actionError && (
-          <div style={{ marginTop: "1rem", background: "#FEF2F2", color: "#DC2626", padding: "0.75rem", borderRadius: "8px", border: "1px solid #FECACA", fontSize: "0.9rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div className="mt-4 bg-red-50 text-red-600 p-3 rounded-lg border border-red-200 text-sm flex items-center gap-2">
             <AlertCircle size={16} /> {actionError}
           </div>
         )}
@@ -115,13 +107,13 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
 
       {/* Action Buttons */}
       {role === "vendor" && (booking.status === "pending" || booking.status === "confirmed") && (
-        <div style={{ padding: "1rem 1.5rem", background: "var(--gray-50)", borderTop: "1px solid var(--border)", display: "flex", gap: "0.75rem", justifyContent: "flex-end", flexWrap: "wrap" }}>
+        <div className="p-4 px-6 bg-gray-50 border-t border-gray-200 flex gap-3 justify-end flex-wrap">
           {booking.status === "pending" && (
             <>
-              <Button variant="danger" size="sm" onClick={() => handleAction("reject")} loading={loadingAction === "reject"} disabled={loadingAction !== null && loadingAction !== "reject"} style={{ background: "#FEE2E2", color: "#DC2626", border: "1px solid #FECACA" }}>
+              <Button variant="danger" size="sm" onClick={() => handleAction("reject")} loading={loadingAction === "reject"} disabled={loadingAction !== null && loadingAction !== "reject"} className="bg-red-100 text-red-600 border border-red-200 hover:bg-red-200">
                 <XCircle size={16} /> Reject
               </Button>
-              <Button variant="primary" size="sm" onClick={() => handleAction("accept")} loading={loadingAction === "accept"} disabled={loadingAction !== null && loadingAction !== "accept"} style={{ background: "#D1FAE5", color: "#059669", border: "1px solid #A7F3D0" }}>
+              <Button variant="primary" size="sm" onClick={() => handleAction("accept")} loading={loadingAction === "accept"} disabled={loadingAction !== null && loadingAction !== "accept"} className="bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200">
                 <CheckCircle size={16} /> Accept Request
               </Button>
             </>
@@ -140,14 +132,14 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
       )}
 
       {role === "customer" && (booking.status === "pending" || booking.status === "confirmed") && (
-        <div style={{ padding: "1rem 1.5rem", background: "var(--gray-50)", borderTop: "1px solid var(--border)", display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
+        <div className="p-4 px-6 bg-gray-50 border-t border-gray-200 flex gap-3 justify-end">
           <Button variant="danger" size="sm" onClick={() => handleAction("cancel")} loading={loadingAction === "cancel"} disabled={loadingAction !== null && loadingAction !== "cancel"}>
             <XCircle size={16} /> Cancel Booking
           </Button>
         </div>
       )}
       {role === "customer" && booking.status === "completed" && !hasReviewed && (
-        <div style={{ padding: "1rem 1.5rem", background: "var(--white)", borderTop: "1px solid var(--border)" }}>
+        <div className="p-4 px-6 bg-white border-t border-gray-200">
           {!isReviewing ? (
             <Button variant="secondary" onClick={() => setIsReviewing(true)}>
               Leave a Review
@@ -166,7 +158,7 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
       )}
       
       {hasReviewed && (
-        <div style={{ padding: "1rem 1.5rem", background: "#F0FDF4", color: "#166534", borderTop: "1px solid #DCFCE7", fontSize: "0.9rem", fontWeight: 600 }}>
+        <div className="p-4 px-6 bg-green-50 text-green-800 border-t border-green-100 text-sm font-semibold">
           ✓ You have submitted a review for this booking.
         </div>
       )}

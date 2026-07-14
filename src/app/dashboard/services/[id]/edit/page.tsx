@@ -18,7 +18,8 @@ export const metadata = {
   title: "Edit Service — ServiceHub",
 };
 
-export default async function EditServicePage({ params }: { params: { id: string } }) {
+export default async function EditServicePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -27,7 +28,7 @@ export default async function EditServicePage({ params }: { params: { id: string
     redirect("/dashboard");
   }
 
-  const service = await fetchService(params.id);
+  const service = await fetchService(id);
 
   if (!service || service.vendorId !== session.user.id) {
     redirect("/dashboard/services");

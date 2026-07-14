@@ -54,24 +54,16 @@ export function BookingList({ role }: BookingListProps) {
 
   return (
     <div>
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "2rem", overflowX: "auto", paddingBottom: "0.5rem" }}>
+      <div className="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
         {TABS.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setStatusFilter(tab.value)}
-            style={{
-              padding: "0.5rem 1.25rem",
-              borderRadius: "100px",
-              border: "1px solid",
-              borderColor: statusFilter === tab.value ? "var(--orange)" : "var(--border)",
-              background: statusFilter === tab.value ? "var(--orange)" : "var(--white)",
-              color: statusFilter === tab.value ? "var(--white)" : "var(--gray-600)",
-              fontWeight: 600,
-              fontSize: "0.9rem",
-              cursor: "pointer",
-              transition: "all 0.2s",
-              whiteSpace: "nowrap"
-            }}
+            className={`px-5 py-2 rounded-full border font-semibold text-sm cursor-pointer transition-all whitespace-nowrap ${
+              statusFilter === tab.value
+                ? "border-orange-500 bg-orange-500 text-white"
+                : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+            }`}
           >
             {tab.label}
           </button>
@@ -79,15 +71,15 @@ export function BookingList({ role }: BookingListProps) {
       </div>
 
       {loading ? (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div className="flex flex-col gap-4">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} style={{ background: "var(--white)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ padding: "1.5rem", flex: 1 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+            <div key={i} className="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col">
+              <div className="p-6 flex-1">
+                <div className="flex justify-between items-start gap-4 flex-wrap mb-4">
                   <div>
-                    <Skeleton width="100px" height="24px" borderRadius="100px" style={{ marginBottom: "0.75rem" }} />
-                    <Skeleton width="200px" height="24px" style={{ marginBottom: "0.5rem" }} />
-                    <div style={{ display: "flex", gap: "1rem" }}>
+                    <Skeleton width="100px" height="24px" borderRadius="100px" className="mb-3" />
+                    <Skeleton width="200px" height="24px" className="mb-2" />
+                    <div className="flex gap-4">
                       <Skeleton width="140px" height="16px" />
                       <Skeleton width="140px" height="16px" />
                     </div>
@@ -99,16 +91,16 @@ export function BookingList({ role }: BookingListProps) {
           ))}
         </div>
       ) : error ? (
-        <div style={{ padding: "1.5rem", background: "#FEF2F2", color: "#DC2626", borderRadius: "8px", border: "1px solid #FECACA" }}>
+        <div className="p-6 bg-red-50 text-red-600 rounded-lg border border-red-200">
           {error}
         </div>
       ) : bookings.length === 0 ? (
-        <div style={{ padding: "4rem 2rem", textAlign: "center", background: "var(--white)", border: "1px solid var(--border)", borderRadius: "12px" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: 600, color: "var(--gray-900)", marginBottom: "0.5rem" }}>No bookings found</h3>
-          <p style={{ color: "var(--gray-500)", margin: 0 }}>There are no bookings matching the current filter.</p>
+        <div className="p-16 text-center bg-white border border-gray-200 rounded-xl">
+          <h3 className="text-xl font-bold text-gray-900 mb-2">No bookings found</h3>
+          <p className="text-gray-500 m-0">There are no bookings matching the current filter.</p>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div className="flex flex-col gap-4">
           {bookings.map((booking) => (
             <BookingCard 
               key={booking._id} 

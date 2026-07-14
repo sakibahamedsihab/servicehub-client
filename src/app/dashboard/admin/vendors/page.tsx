@@ -41,23 +41,23 @@ export default function AdminVendorsPage() {
   };
 
   if (loading && vendors.length === 0) return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <div style={{ marginBottom: "2rem" }}>
-        <Skeleton width="300px" height="32px" style={{ marginBottom: "0.5rem" }} />
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="mb-8">
+        <Skeleton width="300px" height="32px" className="mb-2" />
         <Skeleton width="400px" height="20px" />
       </div>
-      <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: "8px", overflow: "hidden" }}>
-        <div style={{ background: "var(--gray-50)", padding: "1rem", borderBottom: "1.5px solid var(--border)", display: "flex", gap: "1rem" }}>
+      <div className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden">
+        <div className="bg-gray-50 p-4 border-b-2 border-gray-200 flex gap-4">
           <Skeleton width="150px" height="14px" />
           <Skeleton width="200px" height="14px" />
           <Skeleton width="80px" height="14px" />
           <Skeleton width="100px" height="14px" />
         </div>
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} style={{ padding: "1rem", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", gap: "3rem" }}>
+          <div key={i} className="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="flex gap-12">
               <div>
-                <Skeleton width="160px" height="18px" style={{ marginBottom: "6px" }} />
+                <Skeleton width="160px" height="18px" className="mb-1.5" />
                 <Skeleton width="100px" height="12px" />
               </div>
               <Skeleton width="180px" height="16px" />
@@ -71,58 +71,63 @@ export default function AdminVendorsPage() {
     </div>
   );
   
-  if (error) return <div style={{ padding: "2rem", color: "red" }}>{error}</div>;
+  if (error) return <div className="p-8 text-red-600 font-medium">{error}</div>;
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 style={{ fontSize: "2rem", fontWeight: 800, margin: "0 0 0.5rem" }}>Manage Vendors</h1>
-          <p style={{ color: "var(--gray-500)", margin: 0 }}>Review vendor profiles and manage verification badges.</p>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 m-0 mb-2">Manage Vendors</h1>
+          <p className="text-gray-500 m-0">Review vendor profiles and manage verification badges.</p>
         </div>
       </div>
 
-      <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: "8px", overflow: "hidden" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
-          <thead>
-            <tr style={{ background: "var(--gray-50)", borderBottom: "1.5px solid var(--border)" }}>
-              <th style={{ padding: "1rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--gray-500)" }}>Business Name</th>
-              <th style={{ padding: "1rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--gray-500)" }}>Categories</th>
-              <th style={{ padding: "1rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--gray-500)" }}>Rating</th>
-              <th style={{ padding: "1rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--gray-500)" }}>Status</th>
-              <th style={{ padding: "1rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--gray-500)", textAlign: "right" }}>Actions</th>
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white border-2 border-gray-200 rounded-lg overflow-hidden">
+        <table className="w-full text-left border-collapse">
+          <thead className="bg-gray-50 border-b-2 border-gray-200">
+            <tr>
+              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Business Name</th>
+              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Categories</th>
+              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Rating</th>
+              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {vendors.map((vendor) => (
-              <tr key={vendor._id} style={{ borderBottom: "1px solid var(--border)" }}>
-                <td style={{ padding: "1rem", fontWeight: 600, color: "var(--gray-900)" }}>
-                  <Link href={`/vendors/${vendor.userId}`} target="_blank" style={{ color: "inherit", textDecoration: "none" }}>
-                    {vendor.businessName}
-                  </Link>
-                  <div style={{ fontSize: "0.8rem", color: "var(--gray-500)", fontWeight: 400 }}>
-                    Joined {format(new Date(vendor.createdAt), "MMM d, yyyy")}
+              <tr key={vendor._id} className="border-b border-gray-200">
+                <td className="p-4 font-semibold text-gray-900">
+                  <div>
+                    <Link href={`/vendors/${vendor.userId}`} target="_blank" className="text-inherit no-underline hover:text-orange-500 transition-colors">
+                      {vendor.businessName}
+                    </Link>
+                    <div className="text-xs text-gray-500 font-normal mt-1">
+                      Joined {format(new Date(vendor.createdAt), "MMM d, yyyy")}
+                    </div>
                   </div>
                 </td>
-                <td style={{ padding: "1rem", color: "var(--gray-600)", fontSize: "0.9rem" }}>
+                <td className="p-4 text-gray-600 text-sm">
                   {vendor.categories.join(", ")}
                 </td>
-                <td style={{ padding: "1rem" }}>
-                  <span style={{ color: "var(--orange)", fontWeight: 700 }}>★ {vendor.rating.toFixed(1)}</span>
-                  <span style={{ color: "var(--gray-500)", fontSize: "0.85rem", marginLeft: "4px" }}>({vendor.reviewCount})</span>
+                <td className="p-4">
+                  <div>
+                    <span className="text-orange-500 font-bold">★ {vendor.rating.toFixed(1)}</span>
+                    <span className="text-gray-500 text-sm ml-1">({vendor.reviewCount})</span>
+                  </div>
                 </td>
-                <td style={{ padding: "1rem" }}>
+                <td className="p-4">
                   {vendor.isVerified ? (
-                    <span style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10B981", padding: "4px 8px", fontSize: "0.8rem", borderRadius: "4px", fontWeight: 700 }}>VERIFIED</span>
+                    <span className="bg-emerald-100/50 text-emerald-600 px-2 py-1 text-xs rounded font-bold">VERIFIED</span>
                   ) : (
-                    <span style={{ background: "var(--gray-100)", color: "var(--gray-600)", padding: "4px 8px", fontSize: "0.8rem", borderRadius: "4px", fontWeight: 600 }}>PENDING</span>
+                    <span className="bg-gray-100 text-gray-600 px-2 py-1 text-xs rounded font-semibold">PENDING</span>
                   )}
                 </td>
-                <td style={{ padding: "1rem", textAlign: "right" }}>
+                <td className="p-4 text-right">
                   <Button 
                     variant={vendor.isVerified ? "secondary" : "primary"} 
                     onClick={() => handleToggleVerification(vendor._id, vendor.isVerified)}
-                    style={{ padding: "0.4rem 0.75rem", fontSize: "0.85rem" }}
+                    size="sm"
                   >
                     {vendor.isVerified ? "Revoke Verification" : "Verify Vendor"}
                   </Button>
@@ -131,13 +136,68 @@ export default function AdminVendorsPage() {
             ))}
             {vendors.length === 0 && (
               <tr>
-                <td colSpan={5} style={{ padding: "2rem", textAlign: "center", color: "var(--gray-500)" }}>
+                <td colSpan={5} className="p-8 text-center text-gray-500">
                   No vendors found.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden flex flex-col gap-4">
+        {vendors.map((vendor) => (
+          <div key={vendor._id} className="bg-white border-2 border-gray-200 rounded-xl p-5 flex flex-col gap-4 shadow-sm relative overflow-hidden">
+            {/* Status indicator bar at top */}
+            <div className={`absolute top-0 left-0 right-0 h-1.5 ${vendor.isVerified ? 'bg-emerald-500' : 'bg-gray-300'}`} />
+            
+            <div>
+              <div className="flex justify-between items-start mb-1 mt-1">
+                <Link href={`/vendors/${vendor.userId}`} target="_blank" className="text-lg font-bold text-gray-900 no-underline hover:text-orange-500 transition-colors">
+                  {vendor.businessName}
+                </Link>
+                {vendor.isVerified ? (
+                  <span className="bg-emerald-100/50 text-emerald-600 px-2 py-0.5 text-[10px] rounded font-bold uppercase tracking-wide">VERIFIED</span>
+                ) : (
+                  <span className="bg-gray-100 text-gray-600 px-2 py-0.5 text-[10px] rounded font-bold uppercase tracking-wide">PENDING</span>
+                )}
+              </div>
+              <p className="text-xs text-gray-500 m-0">
+                Joined {format(new Date(vendor.createdAt), "MMM d, yyyy")}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider m-0 mb-1">Categories</p>
+                <p className="m-0 text-gray-700 font-medium leading-tight">{vendor.categories.join(", ")}</p>
+              </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider m-0 mb-1">Rating</p>
+                <p className="m-0 text-gray-700 font-medium">
+                  <span className="text-orange-500 font-bold">★ {vendor.rating.toFixed(1)}</span>
+                  <span className="text-gray-500 ml-1">({vendor.reviewCount})</span>
+                </p>
+              </div>
+            </div>
+            
+            <div className="pt-2">
+              <Button 
+                variant={vendor.isVerified ? "secondary" : "primary"} 
+                onClick={() => handleToggleVerification(vendor._id, vendor.isVerified)}
+                className="w-full text-sm py-2.5"
+              >
+                {vendor.isVerified ? "Revoke Verification" : "Verify Vendor"}
+              </Button>
+            </div>
+          </div>
+        ))}
+        {vendors.length === 0 && (
+          <div className="bg-white border-2 border-gray-200 rounded-xl p-8 text-center text-gray-500">
+            No vendors found.
+          </div>
+        )}
       </div>
     </div>
   );

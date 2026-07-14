@@ -21,30 +21,30 @@ export default function AdminDashboardPage() {
   }, []);
 
   if (loading) return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <div style={{ marginBottom: "2rem" }}>
-        <Skeleton width="300px" height="32px" style={{ marginBottom: "0.5rem" }} />
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="mb-8">
+        <Skeleton width="300px" height="32px" className="mb-2" />
         <Skeleton width="400px" height="20px" />
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginBottom: "3rem" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "1.5rem", borderRadius: "8px", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <div key={i} className="bg-white border-2 border-gray-200 p-6 rounded-xl flex items-center gap-6">
             <Skeleton width="48px" height="48px" borderRadius="12px" />
-            <div style={{ flex: 1 }}>
-              <Skeleton width="100px" height="12px" style={{ marginBottom: "0.5rem" }} />
+            <div className="flex-1">
+              <Skeleton width="100px" height="12px" className="mb-2" />
               <Skeleton width="60px" height="28px" />
             </div>
           </div>
         ))}
       </div>
-      <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "2rem", borderRadius: "8px" }}>
-        <Skeleton width="300px" height="24px" style={{ marginBottom: "1.5rem" }} />
+      <div className="bg-white border-2 border-gray-200 p-8 rounded-xl">
+        <Skeleton width="300px" height="24px" className="mb-6" />
         <Skeleton width="100%" height="400px" />
       </div>
     </div>
   );
   
-  if (error) return <div style={{ padding: "2rem", color: "red" }}>{error}</div>;
+  if (error) return <div className="p-8 text-red-600 font-medium">{error}</div>;
   if (!stats) return null;
 
   const kpis = [
@@ -55,25 +55,25 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ fontSize: "2rem", fontWeight: 800, margin: "0 0 0.5rem" }}>Admin Overview</h1>
-        <p style={{ color: "var(--gray-500)", margin: 0 }}>
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-2xl md:text-3xl font-extrabold m-0 mb-2">Admin Overview</h1>
+        <p className="text-gray-500 m-0">
           Welcome back, {session?.user.name}. Here's what's happening on ServiceHub.
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginBottom: "3rem" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {kpis.map((kpi, i) => (
-          <div key={i} style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "1.5rem", borderRadius: "8px", display: "flex", alignItems: "center", gap: "1.5rem" }}>
-            <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: `${kpi.color}15`, color: kpi.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div key={i} className="bg-white border-2 border-gray-200 p-6 rounded-xl flex items-center gap-6 shadow-sm">
+            <div style={{ background: `${kpi.color}15`, color: kpi.color }} className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0">
               <kpi.icon size={24} />
             </div>
             <div>
-              <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--gray-500)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.25rem" }}>
+              <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">
                 {kpi.label}
               </div>
-              <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--gray-900)", lineHeight: 1 }}>
+              <div className="text-3xl font-black text-gray-900 leading-none">
                 {kpi.value}
               </div>
             </div>
@@ -81,30 +81,30 @@ export default function AdminDashboardPage() {
         ))}
       </div>
 
-      <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "2rem", borderRadius: "8px" }}>
-        <h2 style={{ fontSize: "1.25rem", fontWeight: 800, marginBottom: "1.5rem" }}>Booking Trends (Last 30 Days)</h2>
-        <div style={{ height: "400px" }}>
+      <div className="bg-white border-2 border-gray-200 p-6 md:p-8 rounded-xl shadow-sm">
+        <h2 className="text-xl font-extrabold mb-6">Booking Trends (Last 30 Days)</h2>
+        <div className="h-[400px]">
           {stats.chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={stats.chartData}>
                 <defs>
                   <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--orange)" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="var(--orange)" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#D97757" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#D97757" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: "var(--gray-500)", fontSize: 12 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: "var(--gray-500)", fontSize: 12 }} dx={-10} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E5E5" />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: "#737373", fontSize: 12 }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: "#737373", fontSize: 12 }} dx={-10} />
                 <Tooltip 
                   contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }}
-                  itemStyle={{ color: "var(--orange)", fontWeight: 700 }}
+                  itemStyle={{ color: "#D97757", fontWeight: 700 }}
                 />
-                <Area type="monotone" dataKey="bookings" stroke="var(--orange)" strokeWidth={3} fillOpacity={1} fill="url(#colorBookings)" />
+                <Area type="monotone" dataKey="bookings" stroke="#D97757" strokeWidth={3} fillOpacity={1} fill="url(#colorBookings)" />
               </AreaChart>
             </ResponsiveContainer>
           ) : (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--gray-500)" }}>
+            <div className="flex items-center justify-center h-full text-gray-500">
               Not enough data to display chart.
             </div>
           )}

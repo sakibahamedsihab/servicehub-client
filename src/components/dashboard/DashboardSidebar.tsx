@@ -82,59 +82,45 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
   return (
     <>
       {/* Mobile Top Bar */}
-      {isMobile && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: "64px", background: "var(--gray-900)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1rem", zIndex: 50, borderBottom: "1px solid var(--gray-800)" }}>
-          <Link href="/" style={{ color: "#fff", fontWeight: 800, fontSize: "1.25rem", textDecoration: "none" }}>
-            Service<span style={{ color: "var(--orange)" }}>Hub</span>
-          </Link>
-          <button onClick={() => setIsOpen(!isOpen)} style={{ background: "none", border: "none", color: "#fff", cursor: "pointer" }}>
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      )}
+      <div className="fixed top-0 left-0 right-0 h-16 bg-gray-900 flex items-center justify-between px-4 z-50 border-b border-gray-800 lg:hidden">
+        <Link href="/" className="text-white font-extrabold text-xl no-underline">
+          Service<span className="text-orange-500">Hub</span>
+        </Link>
+        <button onClick={() => setIsOpen(!isOpen)} className="bg-transparent border-none text-white cursor-pointer p-2">
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
 
       {/* Sidebar Overlay (Mobile) */}
-      {isMobile && isOpen && (
+      {isOpen && (
         <div 
           onClick={() => setIsOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 40 }}
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
         />
       )}
 
       {/* Sidebar */}
-      <aside style={{
-        position: isMobile ? "fixed" : "sticky",
-        top: 0,
-        left: 0,
-        height: "100vh",
-        width: "280px",
-        background: "var(--gray-900)",
-        color: "#fff",
-        display: "flex",
-        flexDirection: "column",
-        transition: "transform 0.3s ease",
-        transform: isMobile ? (isOpen ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
-        zIndex: 45,
-        borderRight: "1px solid var(--gray-800)"
-      }}>
-        <div style={{ padding: "2rem 1.5rem", borderBottom: "1px solid var(--gray-800)" }}>
-          {!isMobile && (
-            <Link href="/" style={{ color: "#fff", fontWeight: 900, fontSize: "1.5rem", textDecoration: "none", display: "block", marginBottom: "2rem" }}>
-              Service<span style={{ color: "var(--orange)" }}>Hub</span>
-            </Link>
-          )}
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "var(--gray-800)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid var(--gray-700)" }}>
-              <UserIcon size={24} color="var(--orange)" />
+      <aside className={`
+        fixed lg:sticky top-0 left-0 h-screen w-[280px] bg-gray-900 text-white flex flex-col 
+        transition-transform duration-300 ease-in-out z-45 border-r border-gray-800
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
+      `}>
+        <div className="p-8 pb-6 border-b border-gray-800 pt-20 lg:pt-8">
+          <Link href="/" className="hidden lg:block text-white font-black text-2xl no-underline mb-8">
+            Service<span className="text-orange-500">Hub</span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center border border-gray-700 shrink-0">
+              <UserIcon size={24} className="text-orange-500" />
             </div>
-            <div style={{ overflow: "hidden" }}>
-              <p style={{ fontWeight: 600, fontSize: "0.95rem", margin: "0 0 0.2rem", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>{userName}</p>
-              <p style={{ fontSize: "0.8rem", color: "var(--gray-400)", margin: 0, textTransform: "capitalize" }}>{userRole} Account</p>
+            <div className="overflow-hidden">
+              <p className="font-semibold text-sm m-0 mb-1 whitespace-nowrap text-ellipsis overflow-hidden">{userName}</p>
+              <p className="text-xs text-gray-400 m-0 capitalize">{userRole} Account</p>
             </div>
           </div>
         </div>
 
-        <nav style={{ flex: 1, padding: "1.5rem 1rem", overflowY: "auto", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <nav className="flex-1 p-6 px-4 overflow-y-auto flex flex-col gap-2">
           {links.map((link) => {
             const isActive = pathname === link.href;
             const Icon = link.icon;
@@ -142,26 +128,12 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
               <Link
                 key={link.href}
                 href={link.href}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "0.85rem 1rem",
-                  borderRadius: "0",
-                  background: isActive ? "rgba(217,119,87,0.15)" : "transparent",
-                  color: isActive ? "var(--orange)" : "var(--gray-300)",
-                  textDecoration: "none",
-                  fontWeight: isActive ? 600 : 500,
-                  transition: "all 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) e.currentTarget.style.background = "var(--gray-800)";
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) e.currentTarget.style.background = "transparent";
-                }}
+                className={`
+                  flex items-center justify-between px-4 py-3 rounded-md transition-all duration-200 no-underline
+                  ${isActive ? "bg-orange-500/15 text-orange-500 font-semibold" : "text-gray-300 font-medium hover:bg-gray-800 hover:text-white"}
+                `}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div className="flex items-center gap-3">
                   <Icon size={20} />
                   {link.name}
                 </div>
@@ -171,33 +143,10 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
           })}
         </nav>
 
-        <div style={{ padding: "1.5rem 1rem", borderTop: "1px solid var(--gray-800)" }}>
+        <div className="p-6 px-4 border-t border-gray-800">
           <button
             onClick={handleLogout}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              gap: "1rem",
-              padding: "0.85rem 1rem",
-              borderRadius: "8px",
-              background: "transparent",
-              color: "var(--gray-400)",
-              border: "none",
-              cursor: "pointer",
-              fontWeight: 500,
-              fontSize: "1rem",
-              transition: "all 0.2s",
-              textAlign: "left"
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "var(--gray-800)";
-              e.currentTarget.style.color = "#ef4444";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.color = "var(--gray-400)";
-            }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-md bg-transparent text-gray-400 border-none cursor-pointer font-medium text-base transition-all duration-200 text-left hover:bg-gray-800 hover:text-red-500"
           >
             <LogOut size={20} />
             Sign Out

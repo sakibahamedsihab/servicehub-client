@@ -59,51 +59,45 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ background: "var(--white)", border: "1px solid var(--border)", borderRadius: "12px", padding: "2.5rem" }}>
+    <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-xl p-6 md:p-10">
       {error && (
-        <div style={{ background: "#FEF2F2", color: "#DC2626", padding: "1rem", borderRadius: "8px", marginBottom: "2rem", border: "1px solid #FECACA", fontSize: "0.95rem" }}>
+        <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-8 border border-red-200 text-sm md:text-base">
           {error}
         </div>
       )}
 
-      <div style={{ display: "grid", gap: "2rem", gridTemplateColumns: "1fr 1fr" }}>
-        <div style={{ gridColumn: "1 / -1" }}>
-          <label style={{ display: "block", fontSize: "0.95rem", fontWeight: 600, color: "var(--gray-900)", marginBottom: "0.5rem" }}>Service Title *</label>
+      <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2">
+        <div className="col-span-1 md:col-span-2">
+          <label className="block text-sm font-semibold text-gray-900 mb-2">Service Title *</label>
           <input
             type="text"
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Premium Home Deep Cleaning"
-            style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", borderRadius: "8px", fontSize: "1rem", outline: "none" }}
-            onFocus={(e) => e.target.style.borderColor = "var(--orange)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+            className="w-full p-3 border border-gray-200 rounded-lg text-base outline-none focus:border-orange-500 transition-colors"
           />
         </div>
 
-        <div style={{ gridColumn: "1 / -1" }}>
-          <label style={{ display: "block", fontSize: "0.95rem", fontWeight: 600, color: "var(--gray-900)", marginBottom: "0.5rem" }}>Description *</label>
+        <div className="col-span-1 md:col-span-2">
+          <label className="block text-sm font-semibold text-gray-900 mb-2">Description *</label>
           <textarea
             required
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={5}
             placeholder="Describe what is included in this service..."
-            style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", borderRadius: "8px", fontSize: "1rem", outline: "none", resize: "vertical" }}
-            onFocus={(e) => e.target.style.borderColor = "var(--orange)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+            className="w-full p-3 border border-gray-200 rounded-lg text-base outline-none resize-y focus:border-orange-500 transition-colors"
           />
         </div>
 
         <div>
-          <label style={{ display: "block", fontSize: "0.95rem", fontWeight: 600, color: "var(--gray-900)", marginBottom: "0.5rem" }}>Category *</label>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">Category *</label>
           <select
             required
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
-            style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", borderRadius: "8px", fontSize: "1rem", outline: "none", background: "var(--white)" }}
-            onFocus={(e) => e.target.style.borderColor = "var(--orange)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+            className="w-full p-3 border border-gray-200 rounded-lg text-base outline-none bg-white focus:border-orange-500 transition-colors"
           >
             <option value="" disabled>Select a category</option>
             <option value="Cleaning">Cleaning</option>
@@ -115,21 +109,19 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
         </div>
 
         <div>
-          <label style={{ display: "block", fontSize: "0.95rem", fontWeight: 600, color: "var(--gray-900)", marginBottom: "0.5rem" }}>Image URL</label>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">Image URL</label>
           <input
             type="url"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
             placeholder="https://example.com/image.jpg"
-            style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", borderRadius: "8px", fontSize: "1rem", outline: "none" }}
-            onFocus={(e) => e.target.style.borderColor = "var(--orange)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+            className="w-full p-3 border border-gray-200 rounded-lg text-base outline-none focus:border-orange-500 transition-colors"
           />
-          <p style={{ fontSize: "0.8rem", color: "var(--gray-500)", margin: "0.3rem 0 0" }}>Temporary: Paste a direct link to an image.</p>
+          <p className="text-xs text-gray-500 mt-1">Temporary: Paste a direct link to an image.</p>
         </div>
 
         <div>
-          <label style={{ display: "block", fontSize: "0.95rem", fontWeight: 600, color: "var(--gray-900)", marginBottom: "0.5rem" }}>Price ($) *</label>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">Price ($) *</label>
           <input
             type="number"
             required
@@ -138,14 +130,12 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="99.99"
-            style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", borderRadius: "8px", fontSize: "1rem", outline: "none" }}
-            onFocus={(e) => e.target.style.borderColor = "var(--orange)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+            className="w-full p-3 border border-gray-200 rounded-lg text-base outline-none focus:border-orange-500 transition-colors"
           />
         </div>
 
         <div>
-          <label style={{ display: "block", fontSize: "0.95rem", fontWeight: 600, color: "var(--gray-900)", marginBottom: "0.5rem" }}>Duration (Minutes) *</label>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">Duration (Minutes) *</label>
           <input
             type="number"
             required
@@ -154,31 +144,29 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
             value={durationMinutes}
             onChange={(e) => setDurationMinutes(e.target.value)}
             placeholder="120"
-            style={{ width: "100%", padding: "0.75rem", border: "1px solid var(--border)", borderRadius: "8px", fontSize: "1rem", outline: "none" }}
-            onFocus={(e) => e.target.style.borderColor = "var(--orange)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--border)"}
+            className="w-full p-3 border border-gray-200 rounded-lg text-base outline-none focus:border-orange-500 transition-colors"
           />
         </div>
 
-        <div style={{ gridColumn: "1 / -1", display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "1rem" }}>
+        <div className="col-span-1 md:col-span-2 flex items-center gap-3 mt-4">
           <input
             type="checkbox"
             id="isActive"
             checked={isActive}
             onChange={(e) => setIsActive(e.target.checked)}
-            style={{ width: "18px", height: "18px", accentColor: "var(--orange)" }}
+            className="w-5 h-5 accent-orange-500 cursor-pointer"
           />
-          <label htmlFor="isActive" style={{ fontSize: "1rem", color: "var(--gray-900)", fontWeight: 500, cursor: "pointer" }}>
+          <label htmlFor="isActive" className="text-base text-gray-900 font-medium cursor-pointer">
             Service is active and available for booking
           </label>
         </div>
       </div>
 
-      <div style={{ marginTop: "3rem", borderTop: "1px solid var(--border)", paddingTop: "2rem", display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
-        <Button variant="secondary" type="button" onClick={() => router.push("/dashboard/services")} disabled={loading}>
+      <div className="mt-12 border-t border-gray-200 pt-8 flex flex-col sm:flex-row justify-end gap-4">
+        <Button variant="secondary" type="button" onClick={() => router.push("/dashboard/services")} disabled={loading} className="w-full sm:w-auto">
           Cancel
         </Button>
-        <Button type="submit" loading={loading}>
+        <Button type="submit" loading={loading} className="w-full sm:w-auto">
           {initialData ? "Save Changes" : "Create Service"}
         </Button>
       </div>

@@ -28,23 +28,15 @@ export default async function DashboardLayout({
   const user = session.user as any;
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "var(--gray-50)" }}>
+    <div className="flex min-h-screen bg-gray-50">
       <DashboardSidebar 
         userRole={(user.role === "user" ? "customer" : user.role) as "customer" | "vendor" | "admin" ?? "customer"} 
         userName={user.name} 
         userEmail={user.email} 
       />
       
-      <main style={{ flex: 1, padding: "2rem", overflowY: "auto", minWidth: 0 }}>
-        {/* Safe-area for mobile header since sidebar becomes a top-bar on mobile */}
-        <div style={{ marginTop: "40px", display: "block" }}>
-          <style dangerouslySetInnerHTML={{ __html: `
-            @media (min-width: 1024px) {
-              main > div:first-child {
-                margin-top: 0 !important;
-              }
-            }
-          `}} />
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto min-w-0">
+        <div className="mt-16 lg:mt-0 block">
           {children}
         </div>
       </main>
