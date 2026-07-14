@@ -5,6 +5,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Users, Store, CalendarCheck, DollarSign } from "lucide-react";
 import { adminApi, type AdminStats } from "@/lib/admin";
 import { useSession } from "@/lib/auth-client";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 export default function AdminDashboardPage() {
   const { data: session } = useSession();
@@ -19,7 +20,30 @@ export default function AdminDashboardPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div style={{ padding: "2rem" }}>Loading dashboard...</div>;
+  if (loading) return (
+    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ marginBottom: "2rem" }}>
+        <Skeleton width="300px" height="32px" style={{ marginBottom: "0.5rem" }} />
+        <Skeleton width="400px" height="20px" />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginBottom: "3rem" }}>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "1.5rem", borderRadius: "8px", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+            <Skeleton width="48px" height="48px" borderRadius="12px" />
+            <div style={{ flex: 1 }}>
+              <Skeleton width="100px" height="12px" style={{ marginBottom: "0.5rem" }} />
+              <Skeleton width="60px" height="28px" />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", padding: "2rem", borderRadius: "8px" }}>
+        <Skeleton width="300px" height="24px" style={{ marginBottom: "1.5rem" }} />
+        <Skeleton width="100%" height="400px" />
+      </div>
+    </div>
+  );
+  
   if (error) return <div style={{ padding: "2rem", color: "red" }}>{error}</div>;
   if (!stats) return null;
 

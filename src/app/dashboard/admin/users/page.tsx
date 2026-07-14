@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/Button";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 type User = {
   id: string;
@@ -51,12 +53,40 @@ export default function AdminUsersPage() {
       }
       // Optimistic update
       setUsers(users.map(u => u.id === userId ? { ...u, banned: !currentlyBanned } : u));
+      toast.success(`User successfully ${currentlyBanned ? "unbanned" : "banned"}`);
     } catch (err: any) {
-      alert("Failed to toggle ban status: " + err.message);
+      toast.error("Failed to toggle ban status: " + err.message);
     }
   };
 
-  if (loading && users.length === 0) return <div style={{ padding: "2rem" }}>Loading users...</div>;
+  if (loading && users.length === 0) return (
+    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ marginBottom: "2rem" }}>
+        <Skeleton width="250px" height="32px" style={{ marginBottom: "0.5rem" }} />
+        <Skeleton width="350px" height="20px" />
+      </div>
+      <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: "8px", overflow: "hidden" }}>
+        <div style={{ background: "var(--gray-50)", padding: "1rem", borderBottom: "1.5px solid var(--border)", display: "flex", gap: "1rem" }}>
+          <Skeleton width="100px" height="14px" />
+          <Skeleton width="150px" height="14px" />
+          <Skeleton width="80px" height="14px" />
+          <Skeleton width="100px" height="14px" />
+        </div>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} style={{ padding: "1rem", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", gap: "4rem" }}>
+              <Skeleton width="120px" height="16px" />
+              <Skeleton width="180px" height="16px" />
+              <Skeleton width="80px" height="16px" />
+              <Skeleton width="100px" height="16px" />
+            </div>
+            <Skeleton width="80px" height="32px" borderRadius="6px" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  
   if (error) return <div style={{ padding: "2rem", color: "red" }}>{error}</div>;
 
   return (

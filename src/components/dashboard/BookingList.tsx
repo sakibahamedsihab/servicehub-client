@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { bookingsApi } from "@/lib/bookings";
 import type { Booking, BookingStatus } from "@/lib/bookings";
 import { BookingCard } from "./BookingCard";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 interface BookingListProps {
   role: "vendor" | "customer";
@@ -78,7 +79,25 @@ export function BookingList({ role }: BookingListProps) {
       </div>
 
       {loading ? (
-        <div style={{ padding: "3rem 0", textAlign: "center", color: "var(--gray-500)" }}>Loading bookings...</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} style={{ background: "var(--white)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              <div style={{ padding: "1.5rem", flex: 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+                  <div>
+                    <Skeleton width="100px" height="24px" borderRadius="100px" style={{ marginBottom: "0.75rem" }} />
+                    <Skeleton width="200px" height="24px" style={{ marginBottom: "0.5rem" }} />
+                    <div style={{ display: "flex", gap: "1rem" }}>
+                      <Skeleton width="140px" height="16px" />
+                      <Skeleton width="140px" height="16px" />
+                    </div>
+                  </div>
+                  <Skeleton width="100px" height="32px" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : error ? (
         <div style={{ padding: "1.5rem", background: "#FEF2F2", color: "#DC2626", borderRadius: "8px", border: "1px solid #FECACA" }}>
           {error}

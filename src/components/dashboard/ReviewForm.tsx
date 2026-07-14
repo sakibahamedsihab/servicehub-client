@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { reviewsApi } from "@/lib/reviews";
+import { toast } from "sonner";
 
 interface ReviewFormProps {
   bookingId: string;
@@ -21,17 +22,17 @@ export function ReviewForm({ bookingId, onSuccess, onCancel }: ReviewFormProps) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === 0) {
-      setError("Please select a rating from 1 to 5 stars.");
+      toast.error("Please select a rating from 1 to 5 stars.");
       return;
     }
 
     setLoading(true);
-    setError(null);
     try {
       await reviewsApi.create({ bookingId, rating, comment });
+      toast.success("Review submitted successfully!");
       onSuccess();
     } catch (err: any) {
-      setError(err.message || "Failed to submit review");
+      toast.error(err.message || "Failed to submit review");
     } finally {
       setLoading(false);
     }
@@ -87,18 +88,12 @@ export function ReviewForm({ bookingId, onSuccess, onCancel }: ReviewFormProps) 
           />
         </div>
 
-        {error && (
-          <div style={{ padding: "0.75rem", background: "#FEF2F2", color: "#DC2626", borderRadius: "8px", border: "1px solid #FECACA", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
-            {error}
-          </div>
-        )}
-
         <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
           <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
             Cancel
           </Button>
-          <Button type="submit" variant="primary" disabled={loading}>
-            {loading ? "Submitting..." : "Submit Review"}
+          <Button type="submit" variant="primary" loading={loading}>
+            Submit Review
           </Button>
         </div>
       </form>

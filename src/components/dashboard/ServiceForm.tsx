@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import type { CreateServiceInput } from "@/schemas/service.schema";
-
 import { servicesApi } from "@/lib/services";
+import { toast } from "sonner";
 
 interface ServiceFormProps {
   initialData?: any;
@@ -43,13 +43,16 @@ export function ServiceForm({ initialData }: ServiceFormProps) {
 
       if (initialData) {
         await servicesApi.update(initialData._id, payload);
+        toast.success("Service updated successfully!");
       } else {
         await servicesApi.create(payload);
+        toast.success("Service created successfully!");
       }
 
       router.push("/dashboard/services");
       router.refresh();
     } catch (err: any) {
+      toast.error(err.message || "An unexpected error occurred");
       setError(err.message || "An unexpected error occurred");
       setLoading(false);
     }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Spinner } from "./Spinner";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger";
 type Size    = "sm" | "md" | "lg";
@@ -72,7 +73,8 @@ export function Button({
       }}
       {...rest}
     >
-      {loading ? "Loading…" : children}
+      {loading && <Spinner size={size === "sm" ? 14 : size === "md" ? 16 : 18} />}
+      {children}
     </button>
   );
 }

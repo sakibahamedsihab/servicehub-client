@@ -26,7 +26,7 @@ const STATUS_COLORS: Record<BookingStatus, { bg: string; text: string }> = {
 
 export function BookingCard({ booking, role, onStatusChange }: BookingCardProps) {
   const [service, setService] = useState<Service | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [isReviewing, setIsReviewing] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
@@ -38,7 +38,7 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
   }, [booking.serviceId]);
 
   const handleAction = async (action: "accept" | "reject" | "complete" | "cancel") => {
-    setLoading(true);
+    setLoadingAction(action);
     setActionError(null);
     try {
       if (action === "cancel") {
@@ -52,7 +52,7 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
     } catch (err: any) {
       setActionError(err.message || `Failed to ${action} booking`);
     } finally {
-      setLoading(false);
+      setLoadingAction(null);
     }
   };
 
@@ -118,20 +118,20 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
         <div style={{ padding: "1rem 1.5rem", background: "var(--gray-50)", borderTop: "1px solid var(--border)", display: "flex", gap: "0.75rem", justifyContent: "flex-end", flexWrap: "wrap" }}>
           {booking.status === "pending" && (
             <>
-              <Button variant="danger" size="sm" onClick={() => handleAction("reject")} disabled={loading} style={{ background: "#FEE2E2", color: "#DC2626", border: "1px solid #FECACA" }}>
+              <Button variant="danger" size="sm" onClick={() => handleAction("reject")} loading={loadingAction === "reject"} disabled={loadingAction !== null && loadingAction !== "reject"} style={{ background: "#FEE2E2", color: "#DC2626", border: "1px solid #FECACA" }}>
                 <XCircle size={16} /> Reject
               </Button>
-              <Button variant="primary" size="sm" onClick={() => handleAction("accept")} disabled={loading} style={{ background: "#D1FAE5", color: "#059669", border: "1px solid #A7F3D0" }}>
+              <Button variant="primary" size="sm" onClick={() => handleAction("accept")} loading={loadingAction === "accept"} disabled={loadingAction !== null && loadingAction !== "accept"} style={{ background: "#D1FAE5", color: "#059669", border: "1px solid #A7F3D0" }}>
                 <CheckCircle size={16} /> Accept Request
               </Button>
             </>
           )}
           {booking.status === "confirmed" && (
             <>
-              <Button variant="secondary" size="sm" onClick={() => handleAction("cancel")} disabled={loading}>
+              <Button variant="secondary" size="sm" onClick={() => handleAction("cancel")} loading={loadingAction === "cancel"} disabled={loadingAction !== null && loadingAction !== "cancel"}>
                 <XCircle size={16} /> Cancel Booking
               </Button>
-              <Button variant="primary" size="sm" onClick={() => handleAction("complete")} disabled={loading}>
+              <Button variant="primary" size="sm" onClick={() => handleAction("complete")} loading={loadingAction === "complete"} disabled={loadingAction !== null && loadingAction !== "complete"}>
                 <CheckCircle size={16} /> Mark as Completed
               </Button>
             </>
@@ -141,7 +141,7 @@ export function BookingCard({ booking, role, onStatusChange }: BookingCardProps)
 
       {role === "customer" && (booking.status === "pending" || booking.status === "confirmed") && (
         <div style={{ padding: "1rem 1.5rem", background: "var(--gray-50)", borderTop: "1px solid var(--border)", display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
-          <Button variant="danger" size="sm" onClick={() => handleAction("cancel")} disabled={loading}>
+          <Button variant="danger" size="sm" onClick={() => handleAction("cancel")} loading={loadingAction === "cancel"} disabled={loadingAction !== null && loadingAction !== "cancel"}>
             <XCircle size={16} /> Cancel Booking
           </Button>
         </div>

@@ -14,11 +14,14 @@ export const metadata: Metadata = {
   description: "ServiceHub connects customers with trusted local vendors. Book home cleaning, plumbing, electrical, and 20+ service categories.",
 };
 
+import { Toaster } from 'sonner';
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={inter.variable}>
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         {children}
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

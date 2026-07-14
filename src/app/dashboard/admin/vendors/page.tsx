@@ -6,6 +6,8 @@ import { adminApi } from "@/lib/admin";
 import type { VendorProfile } from "@/lib/vendors";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 export default function AdminVendorsPage() {
   const [vendors, setVendors] = useState<VendorProfile[]>([]);
@@ -32,12 +34,43 @@ export default function AdminVendorsPage() {
     try {
       const updated = await adminApi.verifyVendor(vendorId, !currentStatus);
       setVendors(vendors.map(v => v._id === vendorId ? updated : v));
+      toast.success(currentStatus ? "Vendor verification revoked" : "Vendor successfully verified");
     } catch (err: any) {
-      alert("Failed to update verification: " + err.message);
+      toast.error("Failed to update verification: " + err.message);
     }
   };
 
-  if (loading && vendors.length === 0) return <div style={{ padding: "2rem" }}>Loading vendors...</div>;
+  if (loading && vendors.length === 0) return (
+    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ marginBottom: "2rem" }}>
+        <Skeleton width="300px" height="32px" style={{ marginBottom: "0.5rem" }} />
+        <Skeleton width="400px" height="20px" />
+      </div>
+      <div style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: "8px", overflow: "hidden" }}>
+        <div style={{ background: "var(--gray-50)", padding: "1rem", borderBottom: "1.5px solid var(--border)", display: "flex", gap: "1rem" }}>
+          <Skeleton width="150px" height="14px" />
+          <Skeleton width="200px" height="14px" />
+          <Skeleton width="80px" height="14px" />
+          <Skeleton width="100px" height="14px" />
+        </div>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} style={{ padding: "1rem", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", gap: "3rem" }}>
+              <div>
+                <Skeleton width="160px" height="18px" style={{ marginBottom: "6px" }} />
+                <Skeleton width="100px" height="12px" />
+              </div>
+              <Skeleton width="180px" height="16px" />
+              <Skeleton width="80px" height="16px" />
+              <Skeleton width="100px" height="24px" borderRadius="4px" />
+            </div>
+            <Skeleton width="120px" height="32px" borderRadius="6px" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  
   if (error) return <div style={{ padding: "2rem", color: "red" }}>{error}</div>;
 
   return (

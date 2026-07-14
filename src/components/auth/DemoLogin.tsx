@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/Button";
+import { toast } from "sonner";
 
 const DEMO_ACCOUNTS = [
   { label: "Admin", email: "admin@servicehub.com", color: "#3B82F6" },
@@ -22,7 +23,7 @@ export function DemoLogin({ onComplete }: { onComplete: () => void }) {
       });
       onComplete();
     } catch (err: any) {
-      alert("Failed to sign in demo account: " + err.message);
+      toast.error("Failed to sign in demo account: " + err.message);
     } finally {
       setLoading(null);
     }
