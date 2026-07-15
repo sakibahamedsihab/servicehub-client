@@ -82,12 +82,12 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="fixed top-0 left-0 right-0 h-16 bg-gray-900 flex items-center justify-between px-4 z-50 border-b border-gray-800 lg:hidden">
+      <div className="fixed top-0 left-0 right-0 w-full h-16 bg-gray-900 flex items-center justify-between px-4 z-30 border-b border-gray-800 lg:hidden">
         <Link href="/" className="text-white font-extrabold text-xl no-underline">
           Service<span className="text-orange-500">Hub</span>
         </Link>
-        <button onClick={() => setIsOpen(!isOpen)} className="bg-transparent border-none text-white cursor-pointer p-2">
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        <button onClick={() => setIsOpen(true)} className="bg-transparent border-none text-white cursor-pointer p-2 flex items-center justify-center">
+          <Menu size={24} />
         </button>
       </div>
 
@@ -95,20 +95,29 @@ export function DashboardSidebar({ userRole, userName, userEmail }: SidebarProps
       {isOpen && (
         <div 
           onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity"
         />
       )}
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:sticky top-0 left-0 h-screen w-[280px] bg-gray-900 text-white flex flex-col 
-        transition-transform duration-300 ease-in-out z-45 border-r border-gray-800
+        fixed lg:sticky top-0 left-0 h-[100dvh] w-[280px] bg-gray-900 text-white flex flex-col 
+        transition-transform duration-300 ease-in-out z-50 border-r border-gray-800
         ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
       `}>
-        <div className="p-8 pb-6 border-b border-gray-800 pt-20 lg:pt-8">
-          <Link href="/" className="hidden lg:block text-white font-black text-2xl no-underline mb-8">
-            Service<span className="text-orange-500">Hub</span>
-          </Link>
+        <div className="p-6 lg:p-8 pb-6 border-b border-gray-800 flex flex-col gap-8">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-white font-black text-2xl no-underline">
+              Service<span className="text-orange-500">Hub</span>
+            </Link>
+            {/* Mobile Close Button inside the sidebar */}
+            <button 
+              onClick={() => setIsOpen(false)} 
+              className="lg:hidden bg-gray-800 hover:bg-gray-700 text-gray-300 border-none rounded-md p-1.5 cursor-pointer transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center border border-gray-700 shrink-0">
               <UserIcon size={24} className="text-orange-500" />
