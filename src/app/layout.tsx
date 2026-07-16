@@ -15,12 +15,15 @@ export const metadata: Metadata = {
 };
 
 import { Toaster } from 'sonner';
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={inter.variable}>
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-        {children}
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
         <Toaster position="top-right" richColors />
       </body>
     </html>
